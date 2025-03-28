@@ -12,7 +12,6 @@ PrependTo[$ContextPath,"AdditiveGroupQuotients`"];
 
 BeginPackage["AdditiveGroupTheorems`"];
 << AdditiveGroupQuotients`
-Needs["Commons`"]
 
 
 AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite, the AdditiveGroup package suite. It implements the \
