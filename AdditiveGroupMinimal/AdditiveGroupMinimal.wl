@@ -4,8 +4,9 @@
 (*Additive Groups Minimal Package*)
 
 
+PrependTo[$ContextPath,"Commons`"];
 BeginPackage["AdditiveGroupMinimal`"];
-Needs["Commons`"->"com`"]
+<< Commons`
 
 
 AdditiveGroupMinimalPackage::usage = "This is the first module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite.\
@@ -83,37 +84,35 @@ Remove[g];
 
 
 MakeMinimalGroup[n_]:= Module[{t,runtime},
-							t = com`EstimatedTime[n];
+							t = Commons`EstimatedTime[n];
 							If[t>60, 
 								If[t>3600, 
-									com`PrintIf[com`TIMING,"Estimated time is: "<>ToString[t/3600]<>" hours."];
+									Commons`PrintIf[Commons`TIMING,"Estimated time is: "<>ToString[t/3600]<>" hours."];
 									,
-									com`PrintIf[com`TIMING,"Estimated time is: "<>ToString[t/60]<>" minutes."];
+									Commons`PrintIf[Commons`TIMING,"Estimated time is: "<>ToString[t/60]<>" minutes."];
 								]
 								,
-								com`PrintIf[com`TIMING,"Estimated time is: "<>ToString[t]<>" seconds."]
+								Commons`PrintIf[Commons`TIMING,"Estimated time is: "<>ToString[t]<>" seconds."]
 							];	
 							t=TimeUsed[]; 
 							N0=n; 
 							Zn=Range[0,N0-1]; 
 							Sns=Subgroups[];
 							N1=Length[Sns];
-							N2=Null;
-							Css=Null;
 							t=TimeUsed[]-t;
 							If[t > 60, 
 								If[t > 3600, 
-									com`PrintIf[com`TIMING,"Computation time: "<>ToString[t/3600]<>" hours."];
+									Commons`PrintIf[Commons`TIMING,"Computation time: "<>ToString[t/3600]<>" hours."];
 									,
-									com`PrintIf[com`TIMING,"Computation time: "<>ToString[t/60]<>" minutes."];
+									Commons`PrintIf[Commons`TIMING,"Computation time: "<>ToString[t/60]<>" minutes."];
 									];
 									,
-								com`PrintIf[com`TIMING,"Computation time: "<>ToString[t]<>" seconds."];
+								Commons`PrintIf[Commons`TIMING,"Computation time: "<>ToString[t]<>" seconds."];
 							];
 							runtime={N[N0],N[t]};
 							Save[$HomeDirectory<>"\\makegrouplog.ma",runtime];
 						]
-Remove[t,runtime,n,com`EstimatedTime,com`PrintIf,com`TIMING];
+Remove[t,runtime,n];
 							
 ElementOrder[g_]:= Module[{order=1,h=g},
 							If[g==0,Return[1],None];
@@ -128,10 +127,10 @@ Remove[order,h,g];
 
 
 MakeMinimalGroupInstance[n_]:= Module[{C0,C1},
-									C0 = {Zn,N0,N1,N2,Sns,Css};
+									C0 = {Zn,N0,N1,Null,Sns,Null};
 									MakeMinimalGroup[n];
-									C1 = {Zn,N0,N1,N2,Sns,Css};
-									{Zn,N0,N1,N2,Sns,Css}=C0;
+									C1 = {Zn,N0,N1,Null,Sns,Null};
+									{Zn,N0,N1,Null,Sns,Null}=C0;
 									Return[C1];
 								]
 								

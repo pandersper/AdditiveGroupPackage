@@ -7,7 +7,7 @@
 PrependTo[$ContextPath,"AdditiveGroupMinimal`"];
 PrependTo[$ContextPath,"AdditiveGroupBasics`"];
 BeginPackage["AdditiveGroup`"];
-<<AdditiveGroupBasics`
+<< AdditiveGroupBasics`
 
 
 AdditiveGroupPackage::usage = "This is is the third and main module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite.\
@@ -19,7 +19,7 @@ AdditiveGroupPackage::usage = "This is is the third and main module of the \!\(\
 (*Documentation*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Operators, constants  and primitive mappings*)
 
 
@@ -57,7 +57,7 @@ NonEntanglingPaths::usage = "  {{{Int}}}  |   Returns the subset paths (see Subs
 NonEntanglingPathsIndexed::usage = "  {{Int}}  |  Like NonEntanglingPaths but with subgroup indexes. See NonEntanglingSubgroups.";
 
 PartitioningSubgroups::usage = "EXIST NOT";
-PartialPartitions::usage = " {{Int}}  |  The products of the zero-meeting subgroups. Se ZeroMeetings in basic package.";
+ZeroMeetFactorisation::usage = "  <|{Int,Int}->Int|>  |  Association of indexes of zero-meeting subgroups to their product. Se ZeroMeetings in basic package.";
 
 SubgroupProducts::usage = " {{Int}}  |  Returns the matrix i.e the multiplication table of all products of two subgroups.";
 SubgroupProductBoundary::usage = "{{Int}} |  Returns the differing set between the union of two subgroups and the product of them,";
@@ -76,7 +76,7 @@ ContainmentIndexesFromGeneratorNonTrivial::usage = "  {{Int}}  |  Gives the cont
 (*Derived sets and corresponding properites*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Isomorphy*)
 
 
@@ -84,7 +84,7 @@ AdditivePermutationGroup::usage = " Int --> PermutationGroup  |  The permutation
 AdditivePermutationSubgroups::usage = " Int --> {PermutationGroup}  |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) as isomorphic permutation groups.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
@@ -118,11 +118,7 @@ HasseWebGraphEdges::usage = " Graph  |  Like HasseGraph but based on a HasseWeb 
 (*Operators, constants  and primitive sets and mappings*)
 
 
-CircleDot[gs1_,gs2_]:= Sort@Flatten[Outer[CirclePlus,gs1,gs2,1],1]
-Remove[gs1,gs2]
-
-
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Undependent theory*)
 
 
@@ -164,7 +160,7 @@ Remove[cycles,i]
 (*Independent instances*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Theory*)
 
 
@@ -172,14 +168,14 @@ Remove[cycles,i]
 (*Elementwise*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Subsets*)
 
 
 SubgroupOrder[k_]:= SubgroupOrders[N0][[-k]]
 Remove[k]
 
-GeneratorSpan[g_]:=TotalSpan[{g},GeneratorsAndOrder[][g]]
+GeneratorSpan[g_]:=AdditiveGroup`Private`TotalSpan[{g},GeneratorsAndOrder[][g]]
 Remove[g]
 
 SubsettingPathsIndexes[k_]:=With[{all=Containment[k]},
@@ -221,15 +217,15 @@ Remove[k]
 NonEntanglingPathsIndexed[k_]:= Flatten /@ (NonEntanglingPaths[k]/.PositionIndex[Sns]);
 Remove[k]
 
-PartialPartitions[]:= With[{zeromeets=ZeroMeetingSubgroups[]}, 
-							Return[Table[Outer[CirclePlus,zeromeets[[i,1]],zeromeets[[i,2]]],
-								{i,1,Length[zeromeets]}]];]
-Remove[zeromeets,i]
+ZeroMeetFactorisation[]:= Module[{zeromeets=ZeroMeetingSubgroups[],partials}, 
+							partials=Table[zeromeets[[i,1]]\[CirclePlus]zeromeets[[i,2]],{i,1,Length[zeromeets]}];
+							Return[AssociationThread[Flatten[(#/.PositionIndex[Sns])&/@zeromeets,{1,3}],First /@ (partials/.PositionIndex[Sns])]]]
+Remove[zeromeets,partials,i]
 
-SubgroupProducts[]:=Table[Sns[[i]] \[CircleDot] Sns[[j]],{i,1,N1},{j,1,N1}]
+SubgroupProducts[]:=Table[Sns[[i]]\[CirclePlus]Sns[[j]],{i,1,N1},{j,1,N1}]
 Remove[i,j]
 
-SubgroupProductBoundary[G1_,G2_]:=Complement[(G1\[CircleDot]G2),G1\[Union]G2]
+SubgroupProductBoundary[G1_,G2_]:=Complement[(G1\[CirclePlus]G2),G1\[Union]G2]
 Remove[G1,G2]
 
 SubgroupProductBoundaries[]:=Table[SubgroupProductBoundary[Sns[[i]],Sns[[j]]],{i,1,N1},{j,1,N1}]
@@ -241,9 +237,6 @@ Remove[i,j]
 SubgroupSymmetricDiffs[]:=Table[SymmetricDifference[Sns[[i]],Sns[[j]]],{i,1,N1},{j,1,N1}]
 Remove[i,j]
 
-ContainmentNonTrivial[k_]:= Sns[[ContainmentIndexesNonTrivial[k]]];
-Remove[k]
-
 ContainmentAndComplement[k_]:=With[{in=Containment[k],all=Sns},Return[{in,Complement[all,in]}]];
 Remove[k,in,all]
 ContainmentAndComplementNonTrivial[k_]:=With[{in=ContainmentNonTrivial[k],all=Sns[[2;;-2]]},Return[{in,Complement[all,in]}]]
@@ -253,7 +246,7 @@ ContainmentIndexesFromGeneratorNonTrivial[g_]:= ContainmentIndexes[Flatten[Posit
 Remove[g]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Isomorphy*)
 
 
@@ -261,7 +254,7 @@ AdditivePermutationGroup[]:= PermutationGroup[CyclesList[]]
 AdditivePermutationSubgroups[]:= PermutationGroup /@ (Sns/.CyclesMap[])
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
@@ -400,7 +393,24 @@ HasseWebGraphEdges[m_]:= With[{MHS=HasseWeb[m],orders=SubgroupOrders[m]},
 Remove[m,MHS,orders,HS,expansions,expansion,M,A,X,VS,ES,edge,to,from,vtxpnl,v,vtxlbltbl,edglbltbl,title,i]
 
 
-(* ::Section::Closed:: *)
+Begin["`Private`"];
+
+TotalSpan[list_,k_]:= Module[{span,length,changing=True},
+								span=list;
+								While[changing,
+									length=Length[span];
+									span=span\[Union]Flatten[Outer[#1\[CirclePlus]#2&,span,span]];
+									changing=length!=Length[span]\[And]Max[span]<=k;
+								];
+								span={}\[Union]span\[Union]Flatten[Outer[#1\[CirclePlus]#2&,span,span]];
+								Return[span];
+							]						
+Remove[list,k,span,lengt,changing];
+
+End[];
+
+
+(* ::Section:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 

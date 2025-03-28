@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Additive Groups Basics Package*)
 
 
@@ -13,34 +13,33 @@ AdditiveGroupBasicsPackage::usage = "This is the second module of the \!\(\*Subs
 									It contains the basic functionality. Not quotientgroups and fancy subgroup functionality.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Documentation*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Operators, constants  and primitive mappings*)
 
 
-CircleDot::usage = "  [Int],[Int] --> [Int] |  The operator giving the product set (subgroup) of two sets (subgroups) of sets(cosets). \
-												All members (cosets) are added to each other respectively.";
-
-
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Subsets and their properties*)
 
 
 Zeros::usage = " The zeros of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 SubgroupOrders::usage = " {Int}  |  All orders of the subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 GeneratorsAndOrder::usage = "  <|Int -> Int|>  |  Returns an association of generators and their respective order.";
+NonUnitMinimalGenerators::usage = " Int --> {Int}  |  The smallest elements that together generate as much of the group possible without the unit (1,one). [MinimalGeneratingSubset]";
 ZeroMeetingSubgroups::usage = " {{Int},{Int}}}  |  Pair of subgroups that only have the zero element in common.";
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
 Containment::usage = " Int --> {{Int}}  |  All subgroups that contains subgroup number i the subgroup order. NOTE: the groups in a containment \
 										   does not contain each other consecutively. Compare with SubsettingPaths in main package.";
+ContainmentNonTrivial::usage = " Int --> {{Int}}  |  Like Containment but with trivial subgroups removed. Se Containment.";
+
 ContainmentHierarchy::usage = " {{{Int}}}  |  The table of all containments of every subgroup.";
 ContainmentHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHierarchy but with trivial subgroups removed.";
 
@@ -56,7 +55,6 @@ HasseDiagram::usage = " Int|[] --> {{1|0},{{Int}}} |  \
 									concerned. The output is indented to be given to HasseGraph for displaying the HasseDiagram graph of the groups subgroup.\
 									If an argument integer is given only subgroups of order less than the argument is computed (incomplete to inspect \
 									the first parst of the Hassediagram for large groups).";
-													  
 
 
 (* ::Section:: *)
@@ -67,14 +65,12 @@ HasseDiagram::usage = " Int|[] --> {{1|0},{{Int}}} |  \
 (*Operators, constants  and primitive sets and mappings*)
 
 
-CircleDot[gs1_,gs2_]:= DeleteDuplicates@Sort@Flatten[Outer[CirclePlus,gs1,gs2,1],1]
-
 Diamond:=AdditiveGroupBasics`Private`ModularAdditionDirect
 
 Remove[gs1,gs2]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Undependent theory*)
 
 
@@ -82,7 +78,7 @@ Remove[gs1,gs2]
 (*Elementwise*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Subsets*)
 
 
@@ -93,7 +89,7 @@ Zeros[]:= With[{G=Zn},Module[{M={},i},
 Remove[G,i]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Theory*)
 
 
@@ -101,9 +97,11 @@ Remove[G,i]
 (*Elementwise*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Subsets*)
 
+
+SubgroupOrders[k_]:= Reverse[Length[#]& /@ Subgroups[k]]
 
 GeneratorsAndOrder[]:= <|KeyValueMap[(#1->Length[#2])&,SubgroupsAndGenerator[]]|>
 
@@ -122,12 +120,14 @@ ZeroMeetingSubgroups[]:= Module[{nonzeros,pairs={},unique,i,j},
 Remove[nonzeros,pairs,unique,i,j]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
 (* * * subset sequences * * *)
 Containment[k_]:= Sns[[ContainmentIndexes[k]]]
+ContainmentNonTrivial[k_]:= Sns[[ContainmentIndexesNonTrivial[k]]];
+
 ContainmentIndexes[k_]:= With[{HS=Sns},
 								Module[{H,contained,containing={}},
 										contained=HS[[k]];
@@ -150,6 +150,9 @@ ContainmentIndexesNonTrivial[k_]:= With[{HS=Sns[[2;;-2]]},
 												Return[containing];]]
 Remove[k,HS,H,contained,containing]
 
+ContainmentHierarchyNonTrivial[]:=Table[ContainmentNonTrivial[k],{k,1,N1-2,1}]
+Remove[k];
+
 ContainmentHierarchy[]:=Table[Containment[i],{i,1,N1}];
 ContainmentIndexesHierarchy[]:=Table[ContainmentIndexes[i],{i,1,N1}];
 ContainmentIndexesHierarchyNonTrivial[]:=Table[ContainmentIndexesNonTrivial[k],{k,1,N1-2,1}]
@@ -158,6 +161,8 @@ Remove[i,k]
 ContainmentSizes[]:= Length /@ Containment[#]& /@ Range[N1]
 ContainmentGenerators[k_]:= SubgroupGenerators[][[ContainmentIndexes[k]]]
 Remove[k]
+
+NonUnitMinimalGenerators[]:= Sort[#[[2]]& /@ (Last /@ ContainmentHierarchyNonTrivial[])]
 						
 HasseDiagram[m_] := With[{HS=Reverse[Subgroups[m]]}, 
 							Module[{M,K,i,j,l,connected},
@@ -175,7 +180,7 @@ Remove[m,HS,M,K,i,j,l,connected]
 HasseDiagram[] := HasseDiagram[N0]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Helpers*)
 
 
@@ -224,7 +229,7 @@ Remove[all,leading,trailing,xs]
 End[];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Seldom used and helpers*)
 
 
