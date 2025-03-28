@@ -10,9 +10,7 @@ PrependTo[$ContextPath,"AdditiveGroupBasics`"];
 PrependTo[$ContextPath,"AdditiveGroup`"];
 
 BeginPackage["AdditiveGroupQuotients`"];
-<< AdditiveGroupMinimal`
 << AdditiveGroup`
-<< Commons`
 
 
 AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit, the AdditiveGroup package suite. It adds quotient group functionality which "<>
