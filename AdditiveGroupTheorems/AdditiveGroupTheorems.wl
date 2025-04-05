@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*The Additive Group  Theorems Package*)
 
 
@@ -12,10 +12,11 @@ PrependTo[$ContextPath,"AdditiveGroupQuotients`"];
 
 BeginPackage["AdditiveGroupTheorems`"];
 << AdditiveGroupQuotients`
+Needs["Commons`"]
 
 
-AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite, the AdditiveGroup package suite. It implements the \
-										correspondence theorem and the three isomorphism theorems with some adjoining functionality.";
+AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite, the AdditiveGroup package suite. It implements the "<>
+									"correspondence theorem and the three isomorphism theorems with some adjoining functionality.";
 
 
 (* ::Section:: *)
@@ -26,7 +27,7 @@ AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*
 (*Theory*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Correspondence theorem*)
 
 
@@ -62,7 +63,8 @@ CorrespondenceSizeFactors::usage = " <| Int -> Int |>  |  For a correspondence, 
 CorrespondenceReduction::usage = " {{{Int},{Int}}}  |  The size reductions in the correspondence map given as a mapping between sizes. See CorrespondanceMap";
 CorrespondenceMaxReductions::usage = " {Int}  |  The maximal size reduction for each subgroup in \!\(\*SubscriptBox[\(Z\), \(n\)]\) under the correspondence.;";
 
-ThirdNonIsomorphiesN::usage = "";
+ThirdNonIsomorphiesN::usage = " Collects groups \!\(\*SubscriptBox[\(Z\), \(n\)]\) where the third isomorphy theorem is shrunk from above and below by one subgroup at a time and for no subgroup in between "<>
+							 " the theorem is fullfilled. The most common is that it is fullfilled for all groups in between. The distribution of this groups are interesting. "
 
 
 (* ::Subsubsection:: *)
@@ -83,30 +85,66 @@ IntersectionsToProducts::usage = " {[Int}} -> {{Int}}  |  Proof-of-principle-met
 														 " See AdditiveGroup`SubgroupProducts and AdditiveGroup`SubgroupIntersections.";
 ProductsToIntersections::usage = IntersectionsToProducts::usage;
 														 
-QuotientSimilars::usage = " Int -> {{Int,Int}}  |  Which set of subggroups (indexes) gives (as denominators) the same quotient group for a given (nominator) subgroup index. ";
+QuotientSimilars::usage = " Int -> {{Int,Int}}  |  Which set of subggroups (indexes) gives (as nominators) the same quotient group for a given (denominator) subgroup index. ";
 
-SecondIsomorphyDeterminingSubgroups::usage = "";
+SecondIsomorphyEqualQuotients::usage = " Int --> {{Int}}  |  Given the index of a subgroup wich pairs of subgroups gives the same quotient groups with it as denominator.";
 
-ThirdIsomorphyTrippelsClasses::usage = "";
-ThirdIsomorphyTrippels::usage = "";
-ThirdIsomorphyTrippelsIso::usage = "";
-ThirdIsomorphyMappingIso::usage = "";
-ThirdIsomorphyMappingIndexToIso::usage = "";																																																																																																																																																																																																					
-ThirdIsomorphyCheck::usage = "";
-ThirdNonIsomorphies::usage = "";
-ThirdNonIsomorphiesFull::usage = "";
-ThirdIsomorphies::usage = "";
-ThirdNonIsomorphicK::usage = "";
-ThirdNonIsomorphicM::usage = "";
-ThirdNonIsomorphicKIndex::usage = "";
-ThirdNonIsomorphicMIndex::usage = "";
-ThirdIsomorphyFromGenerators::usage = "";
-LargestThirdIsomorphyPair::usage = "";
+SecondIsomorphyPartitions::usage = " {{Int}}  |  Set of sets of indexes of groups giving the same quotient groups for all subgroups as denomiator. ";
 
-FirstKMs::usage = "";
-FirstKMindexed::usage = "";
-FirstFalseKMindexed::usage = "";
-FirstTrueKMindexed::usage = "";
+SecondIsomorphyLowerCoeffsCheck::usage = " {{Int}}  |  The scalar quotient giving the expansion from denominator group size to nominator group size of the quotient group on the product side of "<>
+										" the second isomorphy theorem or the 'upper side' of the diamond theorem.";
+SecondIsomorphyUpperCoeffsCheck::usage = " {{Int}}  |  The scalar quotient giving the expansion from denominator group size to nominator group size of the quotient group on the intersection side of "<>
+													" the second isomorphy theorem or the 'lower side' of the diamond graph. The primary coefficients.";
+SecondIsomorphyLiftFactors::usage = " {{Int}}  |  The scalar quotients giving the expansion of groups going from lower side (intersections) to upper side (products) in the second isomorphy theorem "<>
+												" or the upper side of the diamond graph.";
+						
+SecondIsomorphyMittenGroups::usage = " {{1|0}}  |  Curisosity method exploring some kind of 'center subgroup' for the lower (and upper) coefficients in the second theorem.";
+
+ReverseIntersectionSizes::usage = " {{Int},{Int}}  |  Unproved beforehand calculation of the lifting coefficients from the intersection groups's lengths. They seems to be "<>
+														"found by reversal of the list and of the lis of lists.";													
+
+ProductIntersectionSizeQuotientsAndQuotientElementOrders::usage = " {{Int},{Int}}  |  Pair of matrices of quotients between product group size to intersection group size and the quotients treated "<>
+																					" as elements are given an elementorder.";
+
+SecondIsomorphyQuadratics::usage = " {{Int},{Int},{Int}}  |  Curiosity method giving three matrices of scalars of 'quadratic nature' describing the upper and lower coefficients. "<>
+															" The three are (AB+as*bs)/2, 2*AB-as*bs and AB-as*bs where as,bs are lifting factors and expansion coefficients ans AB is "<>
+															" is the quotient of product group size to intersection group size.";
+
+SecondIsomorphyDeterminingSubgroups::usage = " Int --> {{1|0}}  |  Method I made early indicating groups of extra importance to the second theorem. I don't understand it any longer and think I "<>
+														  "over-deduced going from HN\\N to H\\N to G\\N. The last step is not the same as the prior ones. Reckon I thought those groups are pivoting"<>
+														  " between the upper and lower side of the diamond theorem but I can't see that now. It is also depends on N (index n) and for N=G (n=1) "<>
+														  " it coincides with the zeromeeting groups which of course divides the coefficients (and everything of the theorems) in two parts. "<>
+														  " Can't see any transitional cases. Keeps it for a while.";
+
+ThirdIsomorphyTrippelsClasses::usage = " Int,Int,Int -> {{{Int}},{{Int}},{{int}}}  |  The full coset set of the nominator, denominator and quotient on the other "<>
+																		"side of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\\!\(\*SubscriptBox[\(Z\), \(m\)]\) in the equation of the third isomorphy theorem.";
+ThirdIsomorphyTrippels::usage = " Int,Int,Int -> {{Int},{Int},{int}}  |  The representatives set of the nominator, denominator and the quotient on the other "<>
+														" side of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\\!\(\*SubscriptBox[\(Z\), \(m\)]\) in the equation of the third isomorphy theorem.";
+ThirdIsomorphyTrippelsIso::usage = " Int,Int,Int -> {{Int},{Int},{int}}  |  The isomorphic groups of the nominator, denominator and the quotient on the other "<>
+														   " side of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\\!\(\*SubscriptBox[\(Z\), \(m\)]\) in the equation of the third isomorphy theorem.";
+ThirdIsomorphyMappingIso::usage = " Int,Int,Int -> {{Int}->{Int},{Int}->{Int},{int}->{Int}}  |  Mapping between the respective nominators, denominators and the full quotient "<>
+																				" the two sides of the third isomorphy theorem.";
+ThirdIsomorphyMappingIndexToIso::usage =  " Int,Int,Int -> {Int->{Int},Int->{Int},int->{Int}}  | The same as ThirdIsomorphyMappingIso except that the domain groups are indexed ny size.";
+
+ThirdIsomorphyCheck::usage = " Int,Int,Int -> Bool  |  Checks if the third isomorphy theorem is true, that is if i\.08t's assumptions is true, that is if the trippels are "<>
+													"(normal) subgrouping sequence.";
+ThirdNonIsomorphies::usage = " Int -> {{Int,Int}}  |  For a subgroup index it returns all pairs of group indexes for which the third isomoprhy theorem does not hold."; 
+ThirdNonIsomorphiesFull::usage = " Int -> {{Int,Int},{{Int},{Int}}  |  Also returns the both sides of the third isomorphy theorem's equation.";
+ThirdIsomorphies::usage = " Int -> {{Int,Int}}  |  The negation of ThirdNonIsomorphies. " ;
+ThirdNonIsomorphicK::usage = " Int,Int -> {Int} |  Returns one out of three groups in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
+													" and where the group with index m,k gives this method postfix M,K.";
+ThirdNonIsomorphicM::usage = " Int,Int -> {Int} |  Returns one out of three groups in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
+													" and where the group with index m,k gives this method postfix M,K.";
+ThirdNonIsomorphicKIndex::usage = " Int,Int -> Int |  Same as ThirdNonIsomorphicK but return index of subgroup.";
+ThirdNonIsomorphicMIndex::usage = " Int,Int -> Int |  Same as ThirdNonIsomorphicM but return index of subgroup.";
+ThirdIsomorphyFromGenerators::usage = " Int,Int -> {{Int}->{Int},{Int}->{Int},{int}->{Int}}  |  Like ThirdIsomorphyMappingIso but takes two generators, "<>
+																								" generating two subgroups as arguments.";
+LargestThirdIsomorphyGeneratorPairs::usage = " {Int,Int}  |  Returns pairs of generators of different one-generator-subgroups that gives the largest and equal size of the"<>
+												 " left and right side of the third isomorphy theorem.";
+FirstLargestThirdIsomorphyGroups::usage = " {{{Int},{Int}}}  |  That is for which left side isomorphic group equals right side isomophic group.";
+FirstLargestThirdIsomorphyGroupsIndexed::usage = " {{Int,Int}}  |  Like FirstLargestThirdIsomorphyGroups but returns index of groups in size order.";
+FirstFalseThirdIsomorphyGroupsIndexed::usage = " {Int,Int}  |  Like FirstLargestThirdIsomorphyGroupsIndexed but the pair(s) are not isomporphic. ";
+FirstTrueThirdIsomorphyGroupsIndexed::usage = " {Int,Int}  |  Like FirstLargestThirdIsomorphyGroupsIndexed and the pair(s) are isomporphic. ";
 
 
 (* ::Section:: *)
@@ -132,7 +170,7 @@ QuotientCorrespondenceGroups[k_]:= Return[DeleteDuplicates[QuotientGroup[#,k]& /
 QuotientCorrespondenceOrder[k_]:= Return[Length[QuotientCorrespondenceGroups[k]]]
 AllQuotientCorrespondencies[]:= Table[QuotientCorrespondenceGroups[i],{i,N1,1,-1}]
 AllQuotientCorrespondenceOrders[]:= Table[Length[QuotientCorrespondenceGroups[i]],{i,N1}]
-Remove[i,k];
+Remove[i];
 
 CorrespondenceMap[k_]:= With[{HS=Sns},
 									Module[{CS=Containment[k],subgroupindexes,HNsubset},
@@ -168,7 +206,7 @@ UniqueCorrespondenceMapIndexed[k_]:= With[{HS=Sns},
 												quotientgroupindexes[[-1]]={Last[quotientgroupindexes[[-1]]]};
 												Return[AssociationThread[subgroupindexes,quotientgroupindexes]];
 												]]
-Remove[HS,CS,k,subgroupindexes,quotientgroupindexes,HN,HNsubset];
+Remove[HS,CS,subgroupindexes,quotientgroupindexes,HN,HNsubset];
 
 Begin["`Extras`"];		
 	AdditiveGroupTheorems`Extras`CorrespondenceMapSubgroupsIndexed::usage = " <| Int -> {Int}  |  Like CorrespondenceMap except the domain of subgroups are all-subgroups-sizes-indexed.";						
@@ -186,6 +224,7 @@ Begin["`Extras`"];
 												quotientgroupindexes=Position[HN,#]& /@ HNsubset;
 												Return[AssociationThread[Sns[[subgroupindexes]],quotientgroupindexes]];
 												]]
+	Remove[HS,HN,HNsubset,k,subgroupindexes,quotientgroupindexes];
 End[];
 
 CorrespondenceMethodDictionary[k_]:=With[{map=AdditiveGroupTheorems`Extras`CorrespondenceMapSubgroupsIndexed[k]},
@@ -200,7 +239,7 @@ CorrespondenceMethodGenerators[k_]:=With[{map=AdditiveGroupTheorems`Extras`Corre
 												generators=Keys[map];(* indexes is actually generators here - do it properly *)
 												Return[AssociationThread[Keys[map],Inner[Times,generators,valueranges,List]]];
 											]];
-Remove[map,k,lengths,valueranges,generators];
+Remove[map,lengths,valueranges,generators];
 
 Collisions[k_]:=With[{map=CorrespondenceMapIndexed[k]},Return[Select[map,(Length[#]>1)&]]];
 
@@ -243,7 +282,7 @@ Begin["`Extras`"];
 										maps={contimap,corrimap,map};
 										Return[{results,MatrixForm[maps],report}];	 
 									]
-	Remove[Ns,Cs,GN,Is,n1,HNs,dims,sizes,contis,contimap,corrimap,map,imap,images,partitioning,results,maps,report];	
+	Remove[k,Ns,Cs,GN,Is,n1,HNs,dims,sizes,contis,contimap,corrimap,map,imap,images,partitioning,results,maps,report];	
 
 	CorrespondenceReductionList::usage = " {{{Int},{Int}}}  |  The size reductions in the correspondence map. See CorrespondanceMap";
 	CorrespondenceReductionList[]:= Module[{subsets, quotientgroups,list={}},
@@ -269,8 +308,8 @@ ThirdNonIsomorphiesN[l_]:=Module[{nonisos,isoindexes,generators,orders,isos={}},
 										If[Length[Flatten[nonisos]]!=0,
 											isoindexes = Select[nonisos,#!={}&];
 											generators=SubgroupGenerators[][[#]]& /@ isoindexes;
-											orders = GeneratorsAndOrder[][#]&\[Congruent] generators;
-											AppendTo[isos,i-> {isoindexes,generators,orders}];
+											orders = GeneratorsAndOrder[][#]& \[Congruent] generators;
+											AppendTo[isos,i->{isoindexes,generators,orders}];
 											,
 											Nothing];
 									];
@@ -325,18 +364,47 @@ ProductsToIntersections[gs_]:= With[{indexes = Flatten \[Congruent] (gs/.Positio
 									]]
 Remove[indexes,gs,reverse,mapped,long,short,longgroup,shortgroup];
 
-QuotientSimilars[gi_]:=Table[First /@ Position[Table[ContainsExactly[Sns[[j]]\[Backslash]Sns[[gi]],Sns[[i]]\[Backslash]Sns[[gi]]],{i,1,N1}],True],{j,1,N1}]
+SecondIsomorphyPartitions[]:= DeleteDuplicates /@ (SecondIsomorphyEqualQuotients[#]&/@ Range[N1]);
+
+SecondIsomorphyEqualQuotients[gi_]:=Table[First /@ Position[Table[ContainsExactly[Sns[[j]]\[Backslash]Sns[[gi]],Sns[[i]]\[Backslash]Sns[[gi]]],{i,1,N1}],True],{j,1,N1}]
 Remove[gi];
 
-SecondIsomorphyDeterminingSubgroups[k_]:=If[Length[#]==Length[Sns[[1]]\[Backslash]Sns[[k]]],1,0]& \[Congruent](SubgroupIntersections[])
-Remove[k];
-										
+SecondIsomorphyDeterminingSubgroups[n_]:=If[Length[#]==Length[Sns[[1]]\[Backslash]Sns[[n]]],1,0]& \[Congruent](SubgroupIntersections[])
+
+SecondIsomorphyLowerCoeffsCheck[]:=With[{is=SubgroupIntersections[]},Module[{ils=Length \[Congruent] is}, { 
+												Table[(Length /@ Sns)/ils[[n]],
+															{n,1,N1}],
+												Table[Length /@ (MapThread[(#1\[Backslash]#2)&,{Sns,is[[n]]}]),
+															{n,1,N1}]}]]
+Remove[is,ils,n];
+SecondIsomorphyUpperCoeffsCheck[]:=With[{ps=SubgroupProducts[]},Module[{pls=Length\[Congruent]ps}, {
+												Table[pls[[n]]/Length[Sns[[n]]],
+													{n,1,N1}],
+												Table[Length /@ ((#\[Backslash]Sns[[n]])&/@(ps[[n]])),
+													{n,1,N1}]}]]	
+Remove[ps,pls,n];																																	
+SecondIsomorphyLiftFactors[]:= { Table[(Length\[Congruent]SubgroupProducts[])[[i]]/(Length /@ Sns),{i,1,N1}],
+								 Table[Length[Sns[[i]]]/(Length\[Congruent]SubgroupIntersections[])[[i]],{i,1,N1}]}
+						
+SecondIsomorphyMittenGroups[]:= With[{lcfs=SecondIsomorphyLowerCoeffsCheck[][[1]]},
+									Module[{glis=Flatten /@(lcfs/.PositionIndex[Length/@Sns])},
+										Return[(If[#==0,1,0])& \[Congruent](glis-N1/2)];]]
+Remove[lcfs,glis];
+ReverseIntersectionSizes[]:= With[{is=Length \[Congruent] SubgroupIntersections[]}, Return[{Reverse @ is, Reverse /@ is}];]														
+Remove[is];
+ProductIntersectionSizeQuotientsAndQuotientElementOrders[]:= With[{pilqs = (Length \[Congruent] SubgroupProducts[])/(Length \[Congruent] SubgroupIntersections[])},
+										Return[{pilqs,(pilqs-1)/.ElementOrders[]}]]				
+Remove[pilqs];
+SecondIsomorphyQuadratics[]:=With[ {as=SecondIsomorphyLiftFactors[][[1]], bs=SecondIsomorphyUpperCoeffsCheck[][[1]], 
+									AB=ProductIntersectionSizeQuotientsAndOrders[][[1]]},
+									Return[Grid /@ {(AB+as*bs)/2,2*AB-as*bs,AB-as*bs}];]				
+Remove[as,bs,AB];																																																																																																														
 ThirdIsomorphyTrippelsClasses[n_,m_,k_]:= With[{pqQ=AdditiveGroupTheorems`Private`ThirdIsomorphyTrippelsFlattened[n,m,k]},
 											Module[{reps=AdditiveGroupTheorems`Package`RemoveNonDisjointSuccessors[pqQ[[3]][[1]]]},
 													Return[{SortBy[pqQ[[1]],Min],SortBy[pqQ[[2]],Min],SortBy[reps,Min]}]]]
 
 ThirdIsomorphyTrippels[n_,m_,k_]:= With[{pqQ=ThirdIsomorphyTrippelsClasses[n,m,k]},
-													Return[{pqQ[[1]],pqQ[[2]],First /@ pqQ[[3]]}]]
+													Return[{First /@ pqQ[[1]], First /@ pqQ[[2]],First /@ pqQ[[3]]}]]
 
 ThirdIsomorphyTrippelsIso[n_,m_,k_]:= With[{pqQ=ThirdIsomorphyTrippelsClasses[n,m,k]},
 													Return[{IsomorphicCyclicGroup[First /@ pqQ[[1]]],
@@ -368,16 +436,16 @@ ThirdNonIsomorphicMIndex[n_,k_]:= Module[{checks},Table[checks=ThirdIsomorphyChe
 Remove[check,checks,pqQ,reps]
 
 ThirdIsomorphyFromGenerators[m_,k_]:= Module[{K,M,N},
-													K=AdditiveGroup`Private`TotalSpan[{k},N0];
-													M=K\[CirclePlus]AdditiveGroup`Private`TotalSpan[{m},N0];
+													K=AdditiveGroup`Private`TotalSpan[{k}];
+													M=K\[CirclePlus]AdditiveGroup`Private`TotalSpan[{m}];
 													N=Zn;
 													Return[ThirdIsomorphyMappingIso[Commons`Pos[N,Sns],
 																					Commons`Pos[M,Sns],
 																					Commons`Pos[K,Sns]]];
 												]
-Remove[k,m,n,K,M]
+Remove[m,n,K,M]
 												
-LargestThirdIsomorphyPair[]:= With[{gens=NonUnitMinimalGenerators[]},
+LargestThirdIsomorphyGeneratorPairs[]:= With[{gens=NonUnitMinimalSubgroupGenerators[]},
 							Module[{isos=Table[Values[ThirdIsomorphyFromGenerators[gens[[i]],gens[[j]]][[3]]],{i,1,Length[gens]},{j,1,Length[gens]}],
 									lengths,max,generatorpairs},
 									lengths=Length \[Congruent] isos;
@@ -389,25 +457,24 @@ LargestThirdIsomorphyPair[]:= With[{gens=NonUnitMinimalGenerators[]},
 							]];
 Remove[gens,isos,lengths,max,generatorpairs];
 
-FirstKMs[]:=With[{pairs=LargestThirdIsomorphyPair[]},
-					Return[{AdditiveGroup`Private`TotalSpan[{#[[1]]},N0],AdditiveGroup`Private`TotalSpan[{#[[2]]},N0]}& /@ pairs];
-					]
+FirstLargestThirdIsomorphyGroups[]:=With[{pairs=LargestThirdIsomorphyGeneratorPairs[]},
+											Return[{AdditiveGroup`Private`TotalSpan[{#[[1]]}],AdditiveGroup`Private`TotalSpan[{#[[2]]}]}& /@ pairs];]
 Remove[pairs];
 					
-FirstKMindexed[]:=Flatten[FirstKMs[]/.PositionIndex[Sns],{1,3}];
+FirstLargestThirdIsomorphyGroupsIndexed[]:=Flatten[FirstLargestThirdIsomorphyGroups[]/.PositionIndex[Sns],{1,3}];
 
-FirstFalseKMindexed[]:=With[{nis=ThirdNonIsomorphies[1]},
+FirstFalseThirdIsomorphyGroupsIndexed[]:=With[{nis=ThirdNonIsomorphies[1]},
 						Module[{kms,false={},pair},
-								kms=FirstKMindexed[];
+								kms=FirstLargestThirdIsomorphyGroupsIndexed[];
 								For[i=1,i<=Length[kms],i++,
 									pair=kms[[i]];
 									If[ContainsAny[Flatten[nis,1],{pair}],AppendTo[false,pair],None];
 									];
 								Return[false];]];
 
-FirstTrueKMindexed[]:=With[{is=ThirdIsomorphies[1]},
+FirstTrueThirdIsomorphyGroupsIndexed[]:=With[{is=ThirdIsomorphies[1]},
 						Module[{kms,true={},pair},
-								kms=FirstKMindexed[];
+								kms=FirstLargestThirdIsomorphyGroupsIndexed[];
 								For[i=1,i<=Length[kms],i++,
 									pair=kms[[i]];
 									If[ContainsAny[Flatten[is,1],{pair}],AppendTo[true,pair],None];

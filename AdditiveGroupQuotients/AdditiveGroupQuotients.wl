@@ -10,18 +10,20 @@ PrependTo[$ContextPath,"AdditiveGroupBasics`"];
 PrependTo[$ContextPath,"AdditiveGroup`"];
 
 BeginPackage["AdditiveGroupQuotients`"];
+<< AdditiveGroupMinimal`
 << AdditiveGroup`
+<< Commons`
 
 
 AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit, the AdditiveGroup package suite. It adds quotient group functionality which "<>
 										" takes theory to higher grounds and prepares for the classical theorems.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Documentation*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Operators, constants  and primitive mappings	*)
 
 
@@ -42,6 +44,7 @@ Kernel::usage = "  {Int}  |  The elements in the domain that a homomorphism maps
 Image::usage = " {Int}  |  The set of all values that a homomorphism takes over it's domain.";
 
 QuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups. ";
+QuotientKernelSpacings::usage = " {{Int}}  |  The distance (difference) between elements of all quotient group's kernels.";
 NonTrivialQuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups with trivial elements (group) removed.";
 
 Extend::usage = " Brevity operator for investigating left hand side of second isomorphy theorem. ";
@@ -152,6 +155,7 @@ Remove[phi,k,ker,zero];
 
 NonTrivialQuotientKernels[]:= Table[Select[Sns[[i]],(First[Canonical[j,#]]== 0)&],{i,1,N1-1},{j,2,N1-1}];
 QuotientKernels[]:= Table[Select[Sns[[i]],(First[Canonical[j,#]]== 0)&],{i,1,N1},{j,1,N1}];
+QuotientKernelSpacings[]:= ((If[#=={},0,First[#]])& \[Congruent]( Differences \[Congruent] QuotientKernels[]));
 
 Extend[H1_,H2_]:=(H1\[CircleDot]H2)\[Backslash]H2;
 Extending[H1_,g_]:=(g\[CirclePlus]#)& /@ H1;
@@ -328,6 +332,7 @@ Begin["`Private`"];
 	
 	dipp[xs_]:=(xs[[2]]<xs[[1]]&&xs[[2]]<xs[[3]])
 	peak[xs_]:=(xs[[2]]>xs[[1]]&&xs[[2]]>xs[[3]])
+	Remove[xs];
 	
 	QuotientGroupFull[k_,l_]:=Module[{Q},
 										If[Css=={}, 
@@ -344,7 +349,7 @@ Begin["`Private`"];
 										mtable=Table[H[[i]]\[SmallCircle]H[[j]],{i,1,Length[H]},{j,1,Length[H]}];
 										Return[mtable];
 									]]
-	Remove[n,m,mtable];
+	Remove[n,m,H,mtable];
 
 	
 	Begin["`SeldomUsed`"];

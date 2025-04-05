@@ -28,7 +28,7 @@ AdditiveGroupBasicsPackage::usage = "This is the second module of the \!\(\*Subs
 Zeros::usage = " The zeros of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 SubgroupOrders::usage = " {Int}  |  All orders of the subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 GeneratorsAndOrder::usage = "  <|Int -> Int|>  |  Returns an association of generators and their respective order.";
-NonUnitMinimalGenerators::usage = " Int --> {Int}  |  The smallest elements that together generate as much of the group possible without the unit (1,one). [MinimalGeneratingSubset]";
+NonUnitMinimalSubgroupGenerators::usage = " Int --> {Int}  |  The subgroup generators except the trivial ones, 0 and 1.";
 ZeroMeetingSubgroups::usage = " {{Int},{Int}}}  |  Pair of subgroups that only have the zero element in common.";
 
 
@@ -101,6 +101,7 @@ Remove[G,i]
 (*Subsets*)
 
 
+SubgroupOrders[]:= SubgroupOrders[N1];
 SubgroupOrders[k_]:= Reverse[Length[#]& /@ Subgroups[k]]
 
 GeneratorsAndOrder[]:= <|KeyValueMap[(#1->Length[#2])&,SubgroupsAndGenerator[]]|>
@@ -162,7 +163,7 @@ ContainmentSizes[]:= Length /@ Containment[#]& /@ Range[N1]
 ContainmentGenerators[k_]:= SubgroupGenerators[][[ContainmentIndexes[k]]]
 Remove[k]
 
-NonUnitMinimalGenerators[]:= Sort[#[[2]]& /@ (Last /@ ContainmentHierarchyNonTrivial[])]
+NonUnitMinimalSubgroupGenerators[]:= Sort[#[[2]]& /@ (Last /@ ContainmentHierarchyNonTrivial[])]
 						
 HasseDiagram[m_] := With[{HS=Reverse[Subgroups[m]]}, 
 							Module[{M,K,i,j,l,connected},
@@ -225,7 +226,7 @@ OnlyLeadingOne[xs_] := Module[{all, leading, trailing},
 											None;];
 										Return[Join[leading,trailing]];
 								]
-Remove[all,leading,trailing,xs]
+Remove[k,all,leading,trailing,xs]
 End[];
 
 

@@ -130,19 +130,19 @@ MakeMinimalGroupInstance[n_]:= Module[{C0,C1},
 									C0 = {Zn,N0,N1,Null,Sns,Null};
 									MakeMinimalGroup[n];
 									C1 = {Zn,N0,N1,Null,Sns,Null};
-									{Zn,N0,N1,Null,Sns,Null}=C0;
+									{Zn,N0,N1,x1,Sns,x2}=C0;
 									Return[C1];
 								]
 								
 InstanceSubgroups[n_]:= MakeMinimalGroupInstance[n][[5]];
-Remove[C0,C1,n];
+Remove[C0,C1,n,x1,x2];
 
 
 (* ::Subsection:: *)
 (*Theory*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Elementwise*)
 
 
@@ -165,7 +165,7 @@ Subgroups[k_]:= ReverseSort[DeleteDuplicates[Union[{0},#1]& /@ AdditiveGroupMini
 Remove[k];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
@@ -224,12 +224,12 @@ Remove[G,zero,g,g0,cyclic,cyclics,i,k]
 																
 SubcycleAndGenerator[]:= With[{Cs=Subcycles[]},
 								Return[Association[MapThread[(#1->#2)&,{Min/@Cs,Cs}]]];]
-Remove[Cs]
+Remove[k,Cs]
 								
 End[];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 

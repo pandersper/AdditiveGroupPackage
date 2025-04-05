@@ -31,11 +31,11 @@ EstimatedTime::usage = " Int --> Int  |  Group with subgroups's computation time
 EstimatedTimeCosets::usage = " Int --> Int  |  Group with subgroups and quotient groups's computation time including grows as a power two polynomial with group order. This polynomial.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Code*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Common tools - abstract *)
 
 
@@ -54,11 +54,11 @@ NthLargest[n_,M_]:=(Sort@*DeleteDuplicates@*Flatten)[M][[-n]]
 (*Common tools - run-time*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Common tools - io*)
 
 
-TIMING=True;
+TIMING=False;
 
 PrintIf[debug_,s_]:=If[debug,Print[s],None];
 
@@ -66,7 +66,7 @@ EstimatedTime[x_]:= 8.64*^-6 x^2;
 EstimatedTimeCosets[x_]:= 1.02*^-8 x^2.75;
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Non-exports*)
 
 
@@ -74,12 +74,13 @@ Begin["`Private`"];
 
 Commons`Private`MapLevel2[f_,L_]:=Map[f,L,{2}]
 
+Remove[f,L];
 End[];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 
-Remove[f,s,x,L,X,Y,n,M,debug]
+Remove[s,x,xs,X,Y,n,M,debug]
 EndPackage[];

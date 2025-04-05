@@ -1,6 +1,6 @@
 (* ::Package::"Tags"-><|"UppercaseParameter" -> <|Enabled -> False|>|>:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*The Additive Group  Main Package*)
 
 
@@ -10,9 +10,9 @@ BeginPackage["AdditiveGroup`"];
 << AdditiveGroupBasics`
 
 
-AdditiveGroupPackage::usage = "This is is the third and main module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite.\
-							   It contains the the more fancy functionality related to investiganting \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups\
-							   without transcending to quotient groups.";
+AdditiveGroupPackage::usage = "This is is the third and main module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite."<>
+							  " It contains the the more fancy functionality related to investiganting \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups"<>
+							  " without transcending to quotient groups.";
 
 
 (* ::Section:: *)
@@ -46,12 +46,12 @@ CyclesMap::usage = " <|Int->Cycles[]|>  |  Mapping of elements of \!\(\*Subscrip
 SubgroupOrder::usage = " Int --> Int  |  The order of a subgroup. Subgroups are indexed after their sizes.";
 GeneratorSpan::usage = " Int --> {Int}  |  Returns the set of elements that the generator generates, spans.";
 
-SubsettingPaths::usage = " {{{Int}}}  |  Returns paths of subgroups in which every subgroup is a subset of the next subgroup in the path.\
-										 Compare with SubsettingPathsIndexes. ";
-SubsettingPathsIndexes::usage = " {{Int}}  |  Returns paths of indexes of subgroups in which every subgroup is a subset of the next subgroup \
-											  in the path. Compare with SubsettingPaths.";
-SubsettingPathsContainmentIndexes::usage = " {{Int}}  |  Returns the paths of SubsettingPaths but subgroups are indexed corresponding to their \
-														 position in the containment of the given subgroup.";
+SubsettingPaths::usage = " {{{Int}}}  |  Returns paths of subgroups in which every subgroup is a subset of the next subgroup in the path."<>
+										 " Compare with SubsettingPathsIndexes. ";
+SubsettingPathsIndexes::usage = " {{Int}}  |  Returns paths of indexes of subgroups in which every subgroup is a subset of the next subgroup "<>
+											 " in the path. Compare with SubsettingPaths.";
+SubsettingPathsContainmentIndexes::usage = " {{Int}}  |  Returns the paths of SubsettingPaths but subgroups are indexed corresponding to their "<>
+														"position in the containment of the given subgroup.";
 
 NonEntanglingPaths::usage = "  {{{Int}}}  |   Returns the subset paths (see SubsettingPaths) that have no crossings (entanglings) with each other.";
 NonEntanglingPathsIndexed::usage = "  {{Int}}  |  Like NonEntanglingPaths but with subgroup indexes. See NonEntanglingSubgroups.";
@@ -76,7 +76,7 @@ ContainmentIndexesFromGeneratorNonTrivial::usage = "  {{Int}}  |  Gives the cont
 (*Derived sets and corresponding properites*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Isomorphy*)
 
 
@@ -84,30 +84,30 @@ AdditivePermutationGroup::usage = " Int --> PermutationGroup  |  The permutation
 AdditivePermutationSubgroups::usage = " Int --> {PermutationGroup}  |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) as isomorphic permutation groups.";
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
 WholeGroupProducts::usage = " {{1|0}}  |  Returns a matrix that shows which pair of subgroups have the product \!\(\*SubscriptBox[\(Z\), \(n\)]\). ";
 SubgroupProducing::usage = " {{1|0}}  |  Returns a matrix that shows which pair of subgroups have a certain subgroup as the product. ";
-AggregatedSubgroupProducing::usage = " {{{1|0}}}  |  Returns the consecutive matrix sums of subgroup producing pairs, producing subgroup number \
-													 one up to the one with index given as argument.";													 
+AggregatedSubgroupProducing::usage = " {{{1|0}}}  |  Returns the consecutive matrix sums of subgroup producing pairs, producing subgroup number "<>
+													 "one up to the one with index given as argument.";													 
 
-DivergerMatrix::usage = " {{1|0}}  |  Triangular matrix with ones for pairs of subgroups where the smaller subgroup is not fully contained \
-									  in the larger and zeroes everywhere else.";
+DivergerMatrix::usage = " {{1|0}}  |  Triangular matrix with ones for pairs of subgroups where the smaller subgroup is not fully contained "<>
+									  "in the larger and zeroes everywhere else.";
 DivergerMatrixBool::usage = " {{True|False}}  |  Like DivergerMatrix but with bool value instead of 1|0.";
 DivergerPairs::usage = " {{Int,Int}}  |  The pair of subgroups derived from DivergerMatrix.";
 
-HasseWeb::usage = " {{1|0}}  |  The Hassediagram adjancy matrix (see HasseDiagram in basics package) but also with all other subset paths \
-								between subgroups represented as a one. Very many for larger groups and difficult to visualise.";
+HasseWeb::usage = " {{1|0}}  |  The Hassediagram adjancy matrix (see HasseDiagram in basics package) but also with all other subset paths "<>
+								"between subgroups represented as a one. Very many for larger groups and difficult to visualise.";
 
 HasseGraph::usage = " Int --> Graph  |  The the concrete graph visualisation of a Hasse-diagram. See HasseDiagram. ";
 HasseGraphEdges::usage = " Int --> Graph  |  Like HasseGraph but with the extension of cyclic group on the edges.";
-HasseGraphEdges::usage = " Int --> Graph  |  Like HasseGraphEdges[n] but subgroups with order larger than the second argument is discarded. \
-											 The beginning of the diagram for groups that are not feasible to compute.";
+HasseGraphEdges::usage = " Int --> Graph  |  Like HasseGraphEdges[n] but subgroups with order larger than the second argument is discarded. "<>
+											 "The beginning of the diagram for groups that are not feasible to compute.";
 
-HasseWebGraphEdges::usage = " Graph  |  Like HasseGraph but based on a HasseWeb instead of a HasseDiagram. See HasseDiagram in basics package\
-										and HasseWeb int this. ";
+HasseWebGraphEdges::usage = " Graph  |  Like HasseGraph but based on a HasseWeb instead of a HasseDiagram. See HasseDiagram in basics package "<>
+										"and HasseWeb int this. ";
 
 
 (* ::Section:: *)
@@ -175,7 +175,7 @@ Remove[cycles,i]
 SubgroupOrder[k_]:= SubgroupOrders[N0][[-k]]
 Remove[k]
 
-GeneratorSpan[g_]:=AdditiveGroup`Private`TotalSpan[{g},GeneratorsAndOrder[][g]]
+GeneratorSpan[g_]:=AdditiveGroup`Private`TotalSpan[{g}]
 Remove[g]
 
 SubsettingPathsIndexes[k_]:=With[{all=Containment[k]},
@@ -212,7 +212,6 @@ SubsettingPaths[k_]:=With[{all=Containment[k],ipaths=SubsettingPathsContainmentI
 Remove[k,all,n,ipaths,nonzeros]
 
 NonEntanglingPaths[k_]:= Join[#,{Sns[[k]]}]& /@ Select[((SubsettingPaths[k]\[Transpose])[[1;;-2]])\[Transpose],((Fold[Intersection[#2,#1]&,Sns[[1]],#])!={0})&]
-Remove[k]
 
 NonEntanglingPathsIndexed[k_]:= Flatten /@ (NonEntanglingPaths[k]/.PositionIndex[Sns]);
 Remove[k]
@@ -395,17 +394,18 @@ Remove[m,MHS,orders,HS,expansions,expansion,M,A,X,VS,ES,edge,to,from,vtxpnl,v,vt
 
 Begin["`Private`"];
 
-TotalSpan[list_,k_]:= Module[{span,length,changing=True},
+TotalSpan[list_]:= Module[{span,length,newlength,absid,changing=True},
 								span=list;
+								length=Length[span];
 								While[changing,
-									length=Length[span];
 									span=span\[Union]Flatten[Outer[#1\[CirclePlus]#2&,span,span]];
-									changing=length!=Length[span]\[And]Max[span]<=k;
+									newlength = Length[span];
+									changing = length != newlength;
+									length = newlength;
 								];
-								span={}\[Union]span\[Union]Flatten[Outer[#1\[CirclePlus]#2&,span,span]];
 								Return[span];
 							]						
-Remove[list,k,span,lengt,changing];
+Remove[list,k,span,length,changing];
 
 End[];
 
