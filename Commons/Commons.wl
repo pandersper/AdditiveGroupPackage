@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Additive Groups*)
 
 
@@ -11,11 +11,11 @@ BeginPackage["Commons`"];
 Commons::usage = "Methods used often but is not provided by mathematica. Aliases pointing to mathematica functions. Think it is intended to be that way.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Documentation*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Common tools*)
 
 
@@ -30,6 +30,8 @@ TIMING::usage = "Boolean constant wether to enable time prognosis or not. Groups
 EstimatedTime::usage = " Int --> Int  |  Group with subgroups's computation time grows as a power two polynomial with group order. This polynomial.";
 EstimatedTimeCosets::usage = " Int --> Int  |  Group with subgroups and quotient groups's computation time including grows as a power two polynomial with group order. This polynomial.";
 
+Docs::usage = "Documentation of a package as an association between method names and their usage descriptions. Argument one of \"Minimal\",\"Basic\",\"\", \"Quotients\",\"Theorems\".";
+
 
 (* ::Section:: *)
 (*Code*)
@@ -38,6 +40,8 @@ EstimatedTimeCosets::usage = " Int --> Int  |  Group with subgroups and quotient
 (* ::Subsection:: *)
 (*Common tools - abstract *)
 
+
+Docs[str_]:= With[{package="AdditiveGroup"<>str<>"`*"}, Return[AssociationThread[Names[package]->(Information[#,LongForm->False]& /@ Names[package])]]];
 
 Subset[X_,Y_]:=ContainsAll[Y,X]\[And](Sort[X]!=Sort[Y]);
 
@@ -58,12 +62,12 @@ NthLargest[n_,M_]:=(Sort@*DeleteDuplicates@*Flatten)[M][[-n]]
 (*Common tools - io*)
 
 
-TIMING=False;
+TIMING=True;
 
 PrintIf[debug_,s_]:=If[debug,Print[s],None];
 
-EstimatedTime[x_]:= 8.64*^-6 x^2;
-EstimatedTimeCosets[x_]:= 1.02*^-8 x^2.75;
+EstimatedTime[x_]:= -2.7+1.60712861861297*^-8 x^2.7561;
+EstimatedTimeCosets[x_]:= 6.7 +2.8823447626700487*^-7 x^2.5684;
 
 
 (* ::Subsection:: *)

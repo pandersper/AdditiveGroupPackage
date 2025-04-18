@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*The Additive Group  Theorems Package*)
 
 
@@ -12,11 +12,12 @@ PrependTo[$ContextPath,"AdditiveGroupQuotients`"];
 
 BeginPackage["AdditiveGroupTheorems`"];
 << AdditiveGroupQuotients`
-Needs["Commons`"]
 
 
 AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite, the AdditiveGroup package suite. It implements the "<>
 									"correspondence theorem and the three isomorphism theorems with some adjoining functionality.";
+
+Print["AdditivegroupTheorems`: See Docs[\"Theorems\"] for documentation."]
 
 
 (* ::Section:: *)
@@ -27,7 +28,7 @@ AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*
 (*Theory*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Correspondence theorem*)
 
 
@@ -35,7 +36,7 @@ AdditiveGroupTheoremsPackage::usage = "This is is the fifth module of the \!\(\*
 ContainmentCorrespondenceGroups::usage = " {{Int}} | Groups corresponding to the subgroups in the containment of the given group. See Containment.";
 ContainmentCorrespondenceOrder::usage = " Int | The order of the largest group in a containment correspondance. See ContainmentGroups.";
 AllContainmentCorrespondencies::usage = " {{Int}} | Sets of sets of corresponding groups (containment correspondancies) for all containments in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-AllContainmentsCorrespondenceOrders::usage = "  {Int} | All containmnent correspondancies's orders.";
+AllContainmentCorrespondenceOrders::usage = "  {Int} | All containmnent correspondancies's orders.";
 
 (* * * quotient group side of correspondence theorem * * *)
 QuotientCorrespondenceGroups::usage = " {{Int}} | Groups corresponding to the quotient groups derived from dividing all larger groups with the one given.";
@@ -55,6 +56,12 @@ CorrespondenceMethodDictionary::usage = " <| Int -> {Int}  | The same result as 
 															 "by looking up subgroups in \!\(\*SubscriptBox[\(Z\), \(n\)]\). (Algorithm 1 to compute correspondence instead of finding it.)";
 CorrespondenceMethodGenerators::usage = " <| Int -> {Int}  | The same result as CorrespondenceMapSubgroupsIndexed except it is constructed on the fly "<>
 															 "by using the generators of \!\(\*SubscriptBox[\(Z\), \(n\)]\). (Algorithm 2 to compute correspondence instead of finding it.)";
+
+CorrespondenceOrderStructure::usage = " {Int}  |  The orders )not sizes( of all subgroups on the quotient group side of the correspondence theorem, the 'other' side.";
+CorrespondenceSizeStructure::usage = " {Int}  |  The sizes )not orders( of all subgroups on the quotient group side of the correspondence theorem, the 'other' side.";
+CorrespondenceStructure::usage = " {{Int},{Int}}  |  Pair of list of orders and list of sizes of all subgroups on the quotient group side of the correspondence theorem, the 'other' side.";
+CorrespondenceMapStructure::usage = " {{Int},{Int}}->{{Int},{Int}}  |  The order and size structure on both sides of the correspondence theorem.";
+
 
 Collisions::usage = " <| Int -> {{Int,Int}} |>  |  Parts of correspondence map that are non-unique. Where indexed subgroups could be mapped to other  "<>
 												   "quotient groups. The latter are given as indices in the QuotientGroups matrix.";
@@ -77,6 +84,7 @@ IsomorphicCyclicGroup::usage = " The cyclic group isomorphic to the cyclic group
 RelabelElements::usage = " Relabel elements of a group with as smal numbering as possible starting from zero as the smallest.";
 ExtensionRelabeling::usage = " {{<|Int -> Int|>}}  |  Matrix consisting of maps for relabeling of elements to reveal the isomorphy of the left and right sides of the second isomorphy theorem."<>
 													 " Where there are no relabeling ";
+ExtensionRelabelingIndexed::usage = " {{<|Int -> Int|>}}  | Like ExtensionRelabeling but with groups indexed, as usual w.r.o size.";
 ExtensionTransformativeTerms::usage = " {<|Int->Int|>  |  List of the the non-zero-size indices in the extension relabeling matrix.";
 ExtensionIsomorphy::usage = " {{Int}}  |  The cyclic isomorphic groups that concludes the isomorphies of the second isomorphism theorem.";
 
@@ -208,6 +216,16 @@ UniqueCorrespondenceMapIndexed[k_]:= With[{HS=Sns},
 												]]
 Remove[HS,CS,subgroupindexes,quotientgroupindexes,HN,HNsubset];
 
+CorrespondenceSizeStructure[]:= Length /@ (UniqueCorrespondenceMap[#]& /@ Range[N1]);
+
+CorrespondenceOrderStructure[]:= (Last[#]+1)&  /@ (First /@ (UniqueCorrespondenceMap[#]& /@ Range[N1]));
+
+CorrespondenceStructure[] := { CorrespondenceOrderStructure[], CorrespondenceSizeStructure[] };
+
+CorrespondenceMapStructure[] := { {SubgroupOrders[], Length /@ Sns}, CorrespondenceStructure[] };
+
+
+
 Begin["`Extras`"];		
 	AdditiveGroupTheorems`Extras`CorrespondenceMapSubgroupsIndexed::usage = " <| Int -> {Int}  |  Like CorrespondenceMap except the domain of subgroups are all-subgroups-sizes-indexed.";						
 	AdditiveGroupTheorems`Extras`CorrespondenceMapSubgroupsIndexed[k_]:= With[{HS=Sns},
@@ -287,7 +305,7 @@ Begin["`Extras`"];
 	CorrespondenceReductionList::usage = " {{{Int},{Int}}}  |  The size reductions in the correspondence map. See CorrespondanceMap";
 	CorrespondenceReductionList[]:= Module[{subsets, quotientgroups,list={}},
 											For[i=1,i<=N1,i++,
-												subsets=SubsettingPaths[i];
+												subsets=ContainmentPaths[i];
 												quotientgroups=subsets/.CorrespondenceMap[i];
 												AppendTo[list,{Length \[Congruent] subsets,Length \[Congruent] quotientgroups}];
 											];

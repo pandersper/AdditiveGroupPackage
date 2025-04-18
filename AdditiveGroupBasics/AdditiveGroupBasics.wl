@@ -9,8 +9,10 @@ BeginPackage["AdditiveGroupBasics`"];
 <<AdditiveGroupMinimal`
 
 
-AdditiveGroupBasicsPackage::usage = "This is the second module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite.\
-									It contains the basic functionality. Not quotientgroups and fancy subgroup functionality.";
+AdditiveGroupBasicsPackage::usage = "This is the second module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite."<>
+									" It contains the basic functionality. Not quotientgroups and fancy subgroup functionality.";
+
+Print["AdditivegroupBasics`: See Docs[\"Basics\"] for documentation."]
 
 
 (* ::Section:: *)
@@ -36,25 +38,28 @@ ZeroMeetingSubgroups::usage = " {{Int},{Int}}}  |  Pair of subgroups that only h
 (*Structure and graphical overview*)
 
 
-Containment::usage = " Int --> {{Int}}  |  All subgroups that contains subgroup number i the subgroup order. NOTE: the groups in a containment \
-										   does not contain each other consecutively. Compare with SubsettingPaths in main package.";
+Containment::usage = " Int --> {{Int}}  |  All subgroups that contains a subgroup. The subgroup argument is given as a size-order index. NOTE: the groups in a containment"<>
+										  " does not contain each other consecutively. Compare with SubsettingPaths in main package.";
 ContainmentNonTrivial::usage = " Int --> {{Int}}  |  Like Containment but with trivial subgroups removed. Se Containment.";
 
-ContainmentHierarchy::usage = " {{{Int}}}  |  The table of all containments of every subgroup.";
+ContainmentHierarchy::usage = " {{{Int}}}  |  Table of all containments of every subgroup.";
 ContainmentHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHierarchy but with trivial subgroups removed.";
 
-ContainmentIndexes::usage = " Int --> {Int}  |  Like Containment but returns the indexes of the subgroups only.";
+ContainmentIndexes::usage = " Int --> {Int}  |  Like Containment but returns the size-order indexes of the subgroups only.";
+ContainmentIndexesNonTrivial::usage = " Int --> {Int}  |  Like ContainmentIndexes but trivial subgroups are removed.";
 ContainmentIndexesHierarchy::usage = " {{Int}} |  Like ContainmentHierarchy but returns the size-order indexes instead of the subgroups themselves.";
-ContainmentIndexesHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHieracy but all trivial subgroups are removed.";
+ContainmentIndexesHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHieracy but trivial subgroups are removed.";
 
 ContainmentSizes::usage = " {Int}  | The sizes of the subgroups in all containments.";
 ContainmentGenerators::usage = " {Int}  |  The generators of subgroups in the containment of a subgroup.";
 
-HasseDiagram::usage = " Int|[] --> {{1|0},{{Int}}} |  \
-									Adjancy matrix describing the HasseDiagram of the current group's subgroups together with a table of the subgroups \
-									concerned. The output is indented to be given to HasseGraph for displaying the HasseDiagram graph of the groups subgroup.\
-									If an argument integer is given only subgroups of order less than the argument is computed (incomplete to inspect \
-									the first parst of the Hassediagram for large groups).";
+ContainmentMatrix::usage = " Int -> {{Int}}  |  Matrix of common elements of subgroups in a containment.";
+
+HasseDiagram::usage = " Int|[] --> {{1|0},{{Int}}} |  "<>
+								" Adjancy matrix describing the HasseDiagram of the current group's subgroups together with a table of the subgroups"<>
+								" concerned. The output is indented to be given to HasseGraph for displaying the HasseDiagram graph of the groups subgroup."<>
+								" If an argument integer is given only subgroups of order less than the argument is computed (incomplete to inspect"<>
+								" the first parst of the Hassediagram for large groups).";
 
 
 (* ::Section:: *)
@@ -101,7 +106,7 @@ Remove[G,i]
 (*Subsets*)
 
 
-SubgroupOrders[]:= SubgroupOrders[N1];
+SubgroupOrders[]:= SubgroupOrders[N0];
 SubgroupOrders[k_]:= Reverse[Length[#]& /@ Subgroups[k]]
 
 GeneratorsAndOrder[]:= <|KeyValueMap[(#1->Length[#2])&,SubgroupsAndGenerator[]]|>

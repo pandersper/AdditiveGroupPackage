@@ -9,8 +9,11 @@ BeginPackage["AdditiveGroupMinimal`"];
 << Commons`
 
 
-AdditiveGroupMinimalPackage::usage = "This is the first module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite.\
-									It contains the minimal functionality needed for investigating \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups.";
+AdditiveGroupMinimalPackage::usage = "This is the first module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite. "<>
+									"It contains the minimal functionality needed for investigating \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups.";
+					
+Print["AdditivegroupMinimal`: See Docs[\"Minimal\"] for documentation."];
+Remove[str,package]				
 
 
 (* ::Section:: *)
@@ -83,7 +86,8 @@ Remove[g];
 (*Elementwise*)
 
 
-MakeMinimalGroup[n_]:= Module[{t,runtime},
+MakeMinimalGroup[n_]:= Module[{t},
+							Zn={};N0=0;Sns={};N1=0;Css={};N2=0;
 							t = Commons`EstimatedTime[n];
 							If[t>60, 
 								If[t>3600, 
@@ -112,7 +116,7 @@ MakeMinimalGroup[n_]:= Module[{t,runtime},
 							runtime={N[N0],N[t]};
 							Save[$HomeDirectory<>"\\makegrouplog.ma",runtime];
 						]
-Remove[t,runtime,n];
+Remove[t,n];
 							
 ElementOrder[g_]:= Module[{order=1,h=g},
 							If[g==0,Return[1],None];
@@ -142,7 +146,7 @@ Remove[C0,C1,n,x1,x2];
 (*Theory*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Elementwise*)
 
 
@@ -165,7 +169,7 @@ Subgroups[k_]:= ReverseSort[DeleteDuplicates[Union[{0},#1]& /@ AdditiveGroupMini
 Remove[k];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
@@ -202,8 +206,8 @@ ModularAddition[x1_,x2_]:=If[Dimensions[x1]=={}\[And]Dimensions[x2]=={},
 								Return[-1];];]
 Remove[x1,x2]
 
-Subcycles::usage = "Int|Int,Int --> {{Int},{Int}}  |  Repeated addition by the start element gives subcycles in cyclic \!\(\*SubscriptBox[\(Z\), \(n\)]\). \
-													  Like previous method but does not compute subcycles larger than the second argument given.";
+Subcycles::usage = "Int|Int,Int --> {{Int},{Int}}  |  Repeated addition by the start element gives subcycles in cyclic \!\(\*SubscriptBox[\(Z\), \(n\)]\). "<>
+													  "Like previous method but does not compute subcycles larger than the second argument given.";
 Subcycles[]:= Subcycles[N0]
 
 SubcycleAndGenerator::usage = "Int --> <|Int -> {Int}|>   |  Association between generators and their subcycles.";		
@@ -234,3 +238,4 @@ End[];
 
 
 EndPackage[];
+Remove[runtime,N2]

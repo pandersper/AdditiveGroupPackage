@@ -13,18 +13,20 @@ BeginPackage["AdditiveGroup`"];
 AdditiveGroupPackage::usage = "This is is the third and main module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite."<>
 							  " It contains the the more fancy functionality related to investiganting \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups"<>
 							  " without transcending to quotient groups.";
+							  
+Print["Additivegroup`: See Docs[\"\"] for documentation."]
 
 
 (* ::Section:: *)
 (*Documentation*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Operators, constants  and primitive mappings*)
 
 
-Permutation::usage = " Int --> {Int}  |  Returns the Mathematica permutation representation corresponding to the permutation \
-										of \!\(\*SubscriptBox[\(Z\), \(n\)]\)that an element gives rise to.";
+Permutation::usage = " Int --> {Int}  |  Returns the Mathematica permutation representation corresponding to the permutation "<>
+										"of \!\(\*SubscriptBox[\(Z\), \(n\)]\)that an element gives rise to.";
 InnerAut::usage = " Int,Int --> Int  |  The inner g-automorpism of the element x in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 CyclesList::usage = " {Cycles}  |  List of permutations on cycles-form corresponding to the permutation group isomorphic to \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
@@ -46,15 +48,14 @@ CyclesMap::usage = " <|Int->Cycles[]|>  |  Mapping of elements of \!\(\*Subscrip
 SubgroupOrder::usage = " Int --> Int  |  The order of a subgroup. Subgroups are indexed after their sizes.";
 GeneratorSpan::usage = " Int --> {Int}  |  Returns the set of elements that the generator generates, spans.";
 
-SubsettingPaths::usage = " {{{Int}}}  |  Returns paths of subgroups in which every subgroup is a subset of the next subgroup in the path."<>
-										 " Compare with SubsettingPathsIndexes. ";
-SubsettingPathsIndexes::usage = " {{Int}}  |  Returns paths of indexes of subgroups in which every subgroup is a subset of the next subgroup "<>
-											 " in the path. Compare with SubsettingPaths.";
-SubsettingPathsContainmentIndexes::usage = " {{Int}}  |  Returns the paths of SubsettingPaths but subgroups are indexed corresponding to their "<>
-														"position in the containment of the given subgroup.";
+ContainmentPaths::usage = " {{{Int}}}  |  Returns all possible non-trivial smaller containments one can form from a containment."
+ContainmentPathsIndexes::usage = " {{Int}}  | Returns all possible non-trivial smaller containments one can form from a containment indexed by subgroup's size.";
+ContainmentPathsContainmentIndexes::usage = " {{Int}}  | Returns all possible non-trivial smaller containments one can form from a containment indexed by the containment's subgroups.";
 
-NonEntanglingPaths::usage = "  {{{Int}}}  |   Returns the subset paths (see SubsettingPaths) that have no crossings (entanglings) with each other.";
-NonEntanglingPathsIndexed::usage = "  {{Int}}  |  Like NonEntanglingPaths but with subgroup indexes. See NonEntanglingSubgroups.";
+NonEntanglingPaths::usage = "  {{{Int}}}  |   Returns the containment paths (see ContainmentPaths) where the inclusion operator works every step along the path.";
+NonEntanglingPathsIndexed::usage = "  {{Int}}  |  Like NonEntanglingPaths but with subgroup indexes. See NonEntanglingPaths.";
+
+ContainmentMaximum::usage = " {{Int}} |  The containment paths of the conatinment target group that has most paths to it.";
 
 PartitioningSubgroups::usage = "EXIST NOT";
 ZeroMeetFactorisation::usage = "  <|{Int,Int}->Int|>  |  Association of indexes of zero-meeting subgroups to their product. Se ZeroMeetings in basic package.";
@@ -65,7 +66,6 @@ SubgroupProductBoundaries::usage = " {{{Int}}}  |  Returns all subgroup product 
 SubgroupIntersections::usage = " {{Int}}  |  Returns the matrix i.e the multiplication table of all intersections of two subgroups.";
 SubgroupSymmetricDiffs::usage = " {{Int}}  |  Returns the matrix i.e the mutiplication table of all symmetric differences of two subgroups.";
 													 
-ContainmentNonTrivial::usage = " {{Int}}  |  Like Containment but with trivial subgroups removed.";
 ContainmentAndComplement::usage = " Int --> {{Int},{Int}}  |  A subgroups containment together with it\.b4s complement.";
 ContainmentAndComplementNonTrivial::usage = " Int --> {{Int},{Int}} |  Like ContainmentAndComplement but with trivial subgroups removed.";
 
@@ -108,6 +108,8 @@ HasseGraphEdges::usage = " Int --> Graph  |  Like HasseGraphEdges[n] but subgrou
 
 HasseWebGraphEdges::usage = " Graph  |  Like HasseGraph but based on a HasseWeb instead of a HasseDiagram. See HasseDiagram in basics package "<>
 										"and HasseWeb int this. ";
+										
+HasseBoth::usage = " Graph  |  The HasseWeb graph with contained HasseGraph higlighted.";
 
 
 (* ::Section:: *)
@@ -178,7 +180,7 @@ Remove[k]
 GeneratorSpan[g_]:=AdditiveGroup`Private`TotalSpan[{g}]
 Remove[g]
 
-SubsettingPathsIndexes[k_]:=With[{all=Containment[k]},
+ContainmentPathsIndexes[k_]:=With[{all=Containment[k]},
 								Module[{n=Length[all],containmentmatrix,itrees,ipaths,nonzeros},
 									containmentmatrix=Table[
 															If[ContainsAll[all[[i]],all[[j]]]\[Or]ContainsAll[all[[j]],all[[i]]],i,0],
@@ -192,7 +194,7 @@ SubsettingPathsIndexes[k_]:=With[{all=Containment[k]},
 								]];
 Remove[k,all,n,containmentmatrix,itrees,ipaths,nonzeros]
 
-SubsettingPathsContainmentIndexes[k_]:=With[{all=Containment[k]},
+ContainmentPathsContainmentIndexes[k_]:=With[{all=Containment[k]},
 								Module[{n=Length[all],containmentmatrix,itrees,ipaths,nonzeros},
 									containmentmatrix=Table[
 															If[ContainsAll[all[[i]],all[[j]]]\[Or]ContainsAll[all[[j]],all[[i]]],i,0],
@@ -206,15 +208,17 @@ SubsettingPathsContainmentIndexes[k_]:=With[{all=Containment[k]},
 								]];
 Remove[k,all,n,containmentmatrix,itrees,ipaths,nonzeros]
 
-SubsettingPaths[k_]:=With[{all=Containment[k],ipaths=SubsettingPathsContainmentIndexes[k]},
+ContainmentPaths[k_]:=With[{all=Containment[k],ipaths=ContainmentPathsContainmentIndexes[k]},
 						Module[{nonzeros=(Select[#,(#!=0)&])& /@ ipaths},
 								Return[all[[#]]& /@ nonzeros];]]
 Remove[k,all,n,ipaths,nonzeros]
 
-NonEntanglingPaths[k_]:= Join[#,{Sns[[k]]}]& /@ Select[((SubsettingPaths[k]\[Transpose])[[1;;-2]])\[Transpose],((Fold[Intersection[#2,#1]&,Sns[[1]],#])!={0})&]
+NonEntanglingPaths[k_]:= Join[#,{Sns[[k]]}]& /@ Select[((ContainmentPaths[k]\[Transpose])[[1;;-2]])\[Transpose],((Fold[Intersection[#2,#1]&,Sns[[1]],#])!={0})&]
 
 NonEntanglingPathsIndexed[k_]:= Flatten /@ (NonEntanglingPaths[k]/.PositionIndex[Sns]);
 Remove[k]
+
+ContainmentMaximum[]:= MaximalBy[NonEntanglingPathsIndexed[#]& /@ Range[N1],Length];
 
 ZeroMeetFactorisation[]:= Module[{zeromeets=ZeroMeetingSubgroups[],partials}, 
 							partials=Table[zeromeets[[i,1]]\[CirclePlus]zeromeets[[i,2]],{i,1,Length[zeromeets]}];
@@ -390,6 +394,10 @@ HasseWebGraphEdges[m_]:= With[{MHS=HasseWeb[m],orders=SubgroupOrders[m]},
 													
 													Return[X];]]
 Remove[m,MHS,orders,HS,expansions,expansion,M,A,X,VS,ES,edge,to,from,vtxpnl,v,vtxlbltbl,edglbltbl,title,i]
+
+HasseBoth[]:= Module[{nonplanar = HasseWebGraphEdges[], planar = HasseGraphEdges[]},
+				Return[HighlightGraph[nonplanar,{planar,GraphDifference[nonplanar,planar]}]];]
+
 
 
 Begin["`Private`"];

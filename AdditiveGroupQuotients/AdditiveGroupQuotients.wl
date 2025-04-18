@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*The Additive Group Quotientgroup Package*)
 
 
@@ -10,13 +10,13 @@ PrependTo[$ContextPath,"AdditiveGroupBasics`"];
 PrependTo[$ContextPath,"AdditiveGroup`"];
 
 BeginPackage["AdditiveGroupQuotients`"];
-<< AdditiveGroupMinimal`
 << AdditiveGroup`
-<< Commons`
 
 
 AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit, the AdditiveGroup package suite. It adds quotient group functionality which "<>
 										" takes theory to higher grounds and prepares for the classical theorems.";
+										
+Print["AdditivegroupQuotients`: See Docs[\"Quotients\"] for documentation."]
 
 
 (* ::Section:: *)
@@ -27,9 +27,6 @@ AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(
 (*Operators, constants  and primitive mappings	*)
 
 
-Unprotect[Image];
-
-N2::usage = " Int  |  The in-use quotient group's size and order."; 
 Css::usage = " {{{Int}}}  |  Cosets of all quotient groups constructible by the subgroups of Zn.";
 
 CircleDot::usage = "  {Int},{Int} --> {Int} |  The operator giving the product set (subgroup) of two sets (subgroups) of sets(cosets). "<>
@@ -41,7 +38,6 @@ Backslash::usage = "  {Int},{Int} --> {{Int}} |  The quotient group of two group
 
 Canonical::usage = " Int --> {Int}  |  The canonical isomophism which takes an element to the coset it is a representative for.";
 Kernel::usage = "  {Int}  |  The elements in the domain that a homomorphism maps to the zero element in the image.";	
-Image::usage = " {Int}  |  The set of all values that a homomorphism takes over it's domain.";
 
 QuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups. ";
 QuotientKernelSpacings::usage = " {{Int}}  |  The distance (difference) between elements of all quotient group's kernels.";
@@ -68,7 +64,7 @@ IsNormal::usage = " Since \!\(\*SubscriptBox[\(Z\), \(n\)]\) is cyclic all group
 (*Subsets and their properties*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Derived sets and corresponding properites*)
 
 
@@ -77,7 +73,7 @@ CosetsLeft::usage = " Int,Int[,Int] --> {{Int}}  |  The left cosets of two subgr
 Coset::usage = " Int,Int,Int --> {Int}  |  The coset of \!\(\*SubscriptBox[\(Z\), \(n\)]\) with representant g.";
 Cosets::usage = " Int,Int[,Int] --> {{Int}}  |  The cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) if left and right cosets are same, otherwise -1. If no last argument the whole group is used.";
 
-CosetsPowerSet::usage = " The set of all possible cosets in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+CosetsPowerSets::usage = " The set of all possible cosets in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 CosetByInverse::usage = " Int,Int --> {Int}  |  The coset of a subgroup of \!\(\*SubscriptBox[\(Z\), \(n\)]\) with representant \!\(\*SuperscriptBox[\(g\), \(-\)]\). Subgroup is given by size indexation.";
 
@@ -96,7 +92,7 @@ Indexes::usage = " {Int}  |  All indexes in relation to the full group \!\(\*Sub
 (*Isomorphy*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
@@ -150,7 +146,11 @@ Kernel[phi_,k_]:= Module[{ker={},zero=Sns[k],i},
 							If[MemberQ[phi[k,Zn[[i]]],0],AppendTo[ker,Zn[[i]]],None];];
 						Return[ker];]
 						
-Unprotect[Image];Image[phi_]:= Module[{},Return[Table[phi[k,#]&/@Zn,{k,1,N1}]];]
+
+Off[Image::shdw]
+ClearAttributes[Image,{Protected,ReadProtected}];
+Image::usage = " {Int}  |  The set of all values that a homomorphism takes over it's domain.";
+Image[phi_]:= Module[{},Return[Table[phi[k,#]&/@Zn,{k,1,N1}]];]
 Remove[phi,k,ker,zero];
 
 NonTrivialQuotientKernels[]:= Table[Select[Sns[[i]],(First[Canonical[j,#]]== 0)&],{i,1,N1-1},{j,2,N1-1}];
@@ -174,7 +174,7 @@ Remove[H1,H2,Ns,g];
 (*Elementwise*)
 
 
-MakeGroup[n_,quotientgroups_]:= Module[{t,runtime},
+MakeGroup[n_,quotientgroups_]:= Module[{t=0},
 											If[quotientgroups,
 												t = Commons`EstimatedTimeCosets[n];
 												If[t>60, 
@@ -202,7 +202,7 @@ MakeGroup[n_,quotientgroups_]:= Module[{t,runtime},
 											N1=Length[Sns];
 											Css={};
 											If[quotientgroups,
-												Css=CosetsPowerSet[];
+												Css=CosetsPowerSets[];
 												N2=Length[Css];
 												,
 												None];
@@ -215,7 +215,7 @@ MakeGroup[n_,quotientgroups_]:= Module[{t,runtime},
 											Save[$HomeDirectory<>"\\makegrouplog.ma",runtime];
 										];
 					
-Remove[t,runtime,quotientgroups,n];
+Remove[t,quotientgroups,n];
 
 Coset[k_,r_]:= SelectFirst[Cosets[k],MemberQ[#,r]&]
 Remove[k,r];
@@ -268,10 +268,10 @@ Cosets[k_,l_]:= If[IsNormal,Return[CosetsLeft[k,l]],Print["not commutative group
 Cosets[k_]:= Cosets[1,k]
 Remove[k,l];
 
-CosetsPowerSet[]:= If[Css=={},Table[Cosets[i,j],{i,1,N1},{j,i,N1}],Return[Css]]
+CosetsPowerSets[]:= If[Css=={},Table[Cosets[i,j],{i,1,N1},{j,i,N1}],Return[Css]]
 
-CosetSizes[]:= Length \[Congruent] CosetsPowerSet[]
-CosetNumbers[]:= (N0/Length[#])& \[Congruent] CosetsPowerSet[]
+CosetSizes[]:= Length \[Congruent] CosetsPowerSets[]
+CosetNumbers[]:= (N0/Length[#])& \[Congruent] CosetsPowerSets[]
 
 CosetSizeMinima[]:= With[{L=CosetSizes[]}, 
 									Table[
@@ -379,8 +379,10 @@ Begin["`Private`"];
 End[];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 
 EndPackage[];
+SetAttributes[System`Image,{Protected,ReadProtected}]
+On[Image::shdw]
