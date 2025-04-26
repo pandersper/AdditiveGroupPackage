@@ -30,8 +30,6 @@ TIMING::usage = "Boolean constant wether to enable time prognosis or not. Groups
 EstimatedTime::usage = " Int --> Int  |  Group with subgroups's computation time grows as a power two polynomial with group order. This polynomial.";
 EstimatedTimeCosets::usage = " Int --> Int  |  Group with subgroups and quotient groups's computation time including grows as a power two polynomial with group order. This polynomial.";
 
-Docs::usage = "Documentation of a package as an association between method names and their usage descriptions. Argument one of \"Minimal\",\"Basic\",\"\", \"Quotients\",\"Theorems\".";
-
 
 (* ::Section:: *)
 (*Code*)
@@ -39,9 +37,6 @@ Docs::usage = "Documentation of a package as an association between method names
 
 (* ::Subsection:: *)
 (*Common tools - abstract *)
-
-
-Docs[str_]:= With[{package="AdditiveGroup"<>str<>"`*"}, Return[AssociationThread[Names[package]->(Information[#,LongForm->False]& /@ Names[package])]]];
 
 Subset[X_,Y_]:=ContainsAll[Y,X]\[And](Sort[X]!=Sort[Y]);
 
