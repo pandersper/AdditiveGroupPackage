@@ -63,6 +63,7 @@ SubgroupGenerators::usage = " {Int}  |  The generators of all subgroups of \!\(\
 CayleyTable::usage = " Int --> SquareMatrix[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 CayleyTable::usage = " {Int},(Int,Int -> Int) --> Grid[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
+Docs::usage = "Documentation of a package as an association between method names and their usage descriptions. Argument one of \"Minimal\",\"Basic\",\"\", \"Quotients\",\"Theorems\".";
 
 (* ::Section:: *)
 (*Code*)
@@ -198,7 +199,9 @@ Remove[G,op,M,row,i];
 
 
 Begin["`Private`"];					
-					
+
+Docs[str_]:= With[{package="AdditiveGroup"<>str<>"`*"}, Return[AssociationThread[Names[package]->(Information[#,LongForm->False]& /@ Names[package])]]];
+
 ModularAddition[x1_,x2_]:=If[Dimensions[x1]=={}\[And]Dimensions[x2]=={},
 							Return[Mod[x1+x2,N0]],
 							If[Dimensions[x1[[1]]]=={}\[And]Dimensions[x2[[1]]]=={},
