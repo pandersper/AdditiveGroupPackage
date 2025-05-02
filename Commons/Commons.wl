@@ -38,6 +38,7 @@ EstimatedTimeCosets::usage = " Int --> Int  |  Group with subgroups and quotient
 (* ::Subsection:: *)
 (*Common tools - abstract *)
 
+
 Subset[X_,Y_]:=ContainsAll[Y,X]\[And](Sort[X]!=Sort[Y]);
 
 SubsetEqual[X_,Y_]:=ContainsAll[Y,X];

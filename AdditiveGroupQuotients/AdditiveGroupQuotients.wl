@@ -17,6 +17,7 @@ AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(
 										" takes theory to higher grounds and prepares for the classical theorems.";
 										
 Print["AdditivegroupQuotients`: See Docs[\"Quotients\"] for documentation."]
+Off[Image::shdw]
 
 
 (* ::Section:: *)
@@ -24,7 +25,7 @@ Print["AdditivegroupQuotients`: See Docs[\"Quotients\"] for documentation."]
 
 
 (* ::Subsection:: *)
-(*Operators, constants  and primitive mappings	*)
+(*Operators, constants  and primitive set and mappings	*)
 
 
 Css::usage = " {{{Int}}}  |  Cosets of all quotient groups constructible by the subgroups of Zn.";
@@ -37,22 +38,20 @@ SmallCircle::usage = "  {Int},{Int} --> {Int} |  Like CircleDot but  uses \[Diam
 Backslash::usage = "  {Int},{Int} --> {{Int}} |  The quotient group of two groups. Most often the second argument is a subgroup of the first but most important is that they both have a common supergroup.";
 
 Canonical::usage = " Int --> {Int}  |  The canonical isomophism which takes an element to the coset it is a representative for.";
+
 Kernel::usage = "  {Int}  |  The elements in the domain that a homomorphism maps to the zero element in the image.";	
 
 QuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups. ";
+
 QuotientKernelSpacings::usage = " {{Int}}  |  The distance (difference) between elements of all quotient group's kernels.";
-NonTrivialQuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups with trivial elements (group) removed.";
 
 Extend::usage = " Brevity operator for investigating left hand side of second isomorphy theorem. ";
+
 Extending::usage = " Brevity operator for investigating coset multiplication. ";
 
 
 (* ::Subsection:: *)
-(*Properties of single elements in the group*)
-
-
-(* ::Subsection::Closed:: *)
-(*Properties of whole group*)
+(*Whole group*)
 
 
 MakeGroup::usage = " Int,Bool --> Void  |  Constructs \!\(\*SubscriptBox[\(Z\), \(n\)]\) it's subgroups and if second argument is True also all the group's quotient groups are prepared.";
@@ -61,67 +60,54 @@ IsNormal::usage = " Since \!\(\*SubscriptBox[\(Z\), \(n\)]\) is cyclic all group
 
 
 (* ::Subsection:: *)
-(*Subsets and their properties*)
+(*Instances*)
+
+
+MakeFullGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  |  Computes an additive group instance containing it's subgroups and also it's quotient groups. This function temporarily "<>
+																			" alters but restores the current context. If you only need it's subgroup use MakeMinimalGroupInstance instead. ";
+																		
+InstanceQuotientgroups::usage = " Int -->  {{Int}}  |  Returns the quotient groups of the additive group of a given order. It temporarily alters but restores the current context group.";
+
+QuotientPermutationGroup::usage  =  " Int|Int,Int --> PermutationGroup  |  The mathematica permutation group isomorphic with this package's quotient group of two subgroups.";
 
 
 (* ::Subsection:: *)
-(*Derived sets and corresponding properites*)
+(*Derived sets*)
 
-
-CosetsLeft::usage = " Int,Int[,Int] --> {{Int}}  |  The left cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
 
 Coset::usage = " Int,Int,Int --> {Int}  |  The coset of \!\(\*SubscriptBox[\(Z\), \(n\)]\) with representant g.";
+
 Cosets::usage = " Int,Int[,Int] --> {{Int}}  |  The cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) if left and right cosets are same, otherwise -1. If no last argument the whole group is used.";
 
 CosetsPowerSets::usage = " The set of all possible cosets in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
-CosetByInverse::usage = " Int,Int --> {Int}  |  The coset of a subgroup of \!\(\*SubscriptBox[\(Z\), \(n\)]\) with representant \!\(\*SuperscriptBox[\(g\), \(-\)]\). Subgroup is given by size indexation.";
-
 QuotientGroup::usage = " Int,Int[,Int] --> {Int}  |  The quotient group of two subgroups in \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
-QuotientGroups::usage = " {{Int}}  |  All the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-QuotientGroupGenerators::usage = " {Int}  |  The generators of the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-QuotientGroupLasts::usage = " {Int}  |  The largest element in each quotient group (n-1) which always generates the whole cyclic group and always is of order n. ";
-QuotientGroupSizes::usage = " {Int}  |  Size of the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-QuotientGroupsRanks::usage = " {Int} | NOT IMPLEMENTED YET. WAITING FOR ELEGANT WAY TO COMPUTE IT. NOT JUST GENERATE IT BY BRUTE FORCE.";
 
-Index::usage = " Int,Int[,Int] --> Int  |  The number of cosets of two subgroup in \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used."
+QuotientGroups::usage = " {{Int}}  |  All the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
 Indexes::usage = " {Int}  |  All indexes in relation to the full group \!\(\*SubscriptBox[\(Z\), \(n\)]\). See Index.";
 
+QuotientGroupGenerators::usage = " {Int}  |  The generators of the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
-(* ::Subsection:: *)
-(*Isomorphy*)
+QuotientGroupsRanks::usage = " {Int} | NOT IMPLEMENTED YET. WAITING FOR ELEGANT WAY TO COMPUTE IT. NOT JUST GENERATE IT BY BRUTE FORCE.";
+
+RelabelElements::usage = " Relabel elements of a group with as smal numbering as possible starting from zero as the smallest.";
+
+IsomorphicCyclicGroup::usage = " The cyclic group isomorphic to the cyclic group given. The homomorphism is implicit. ";
 
 
 (* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
-CosetSizes::usage = " Int --> {{Int}}  |  The size of the cosets in all possible quotient groups of subgrups of Zn.";
-CosetNumbers::usage = " Int --> {{Int}}  |  The number of cosets in all possible quotient groups of subgrups of Zn.";
-
 CosetSizeExtremes::usage = " {-1|0|1}  |  Indications of local maximum and minimum values of the coset lengths for all quotient groups.";
-CosetSizeMaxima::usage = "  {1|0}  |  Indication of local maximum values of the cosets lengths for all quotient groups.";
-CosetSizeMinima::usage = "  {-1|0}  |  Indication of local minimum values of the cosets lengths for all quotient groups.";
-
-QuotientGroupsPartition::usage = " {{Int}}  |  For each index up to N0 a row of the table consists of quotient groups that higher index subgroups takes with it followed " <>
-								 " by the quotient groups it takes with lower index subgroups. None is placed on the diagonal.";
-QuotientGroupTable::usage = "  {{Int}}  |  The multiplication table of a quotient group.";
- 
-QuotientPermutationGroups::usage  =  " PermutationGroup  |  The mathematica permutation group isomorphic with this package's representation of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-
-QuotientPGroupTables::usage = " Int --> {{GroupMultiplicationTable}}  |  The multiplication tables of all possible quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\)";
-QuotientPGroupSizes::usage = " Int -->  {{Int}}  |  The sizes of all possible quotient groups in Zn. ";
-QuotientPGroupGenerators::usage = " Int --> {{Cycles}}  |  The set of sets of generators for all quotient groups in Zn.";
-QuotientPGroupRanks::usage = " Int --> {{Int}}  |  Matrix of ranks of all the quotient groups in Zn.";
-QuotientPGroupRedundancies::usage = " {Real}  |  The quotient between the order (size) of the group and its rank (number of generators). ";
-QuotientPGroupReduction::usage = " {Real}  |  The association of rules that map all subgroup orders (sizes) to respective rank (number of generators). ";
 
 
 (* ::Section:: *)
 (*Code*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Operators, constants  and primitive sets and mappings*)
 
 
@@ -130,13 +116,8 @@ Remove[gs1,gs2];
 
 SmallCircle[gs1_,gs2_]:= Flatten[Map[DeleteDuplicates@*Flatten,Outer[Diamond,gs1,gs2,1],{2}],{1,2}]
 Remove[gs1,gs2];
-(*
-Backslash[H1_,H2_]:= If[Dimensions[H1[[1]]]=={}\[And]Dimensions[H2[[1]]]=={},
-							Return[DeleteDuplicates@Sort@Table[Sort[Mod[H1[[i]]+#,N0]& /@ H2],{i,1,Length[H1]}]],
-							Return[-1]];
-							*)
-Backslash[H1_,H2_]:=DeleteDuplicates[Sort/@Table[(H1[[i]]\[CirclePlus]#)&/@H2,{i,1,Length[H1]}]]
 
+Backslash[H1_,H2_]:=DeleteDuplicates[Sort/@Table[(H1[[i]]\[CirclePlus]#)&/@H2,{i,1,Length[H1]}]]
 
 Canonical[k_,g_]:= With[{Ns=Sns[[k]]},Return[Sort[(g\[CirclePlus]#)&/@Ns]]]
 Remove[k,g,Ns];
@@ -146,32 +127,23 @@ Kernel[phi_,k_]:= Module[{ker={},zero=Sns[k],i},
 							If[MemberQ[phi[k,Zn[[i]]],0],AppendTo[ker,Zn[[i]]],None];];
 						Return[ker];]
 						
-
-Off[Image::shdw]
 ClearAttributes[Image,{Protected,ReadProtected}];
-Image::usage = " {Int}  |  The set of all values that a homomorphism takes over it's domain.";
 Image[phi_]:= Module[{},Return[Table[phi[k,#]&/@Zn,{k,1,N1}]];]
+Image::usage = " {Int}  |  The set of all values that a homomorphism takes over it's domain.";
 Remove[phi,k,ker,zero];
 
-NonTrivialQuotientKernels[]:= Table[Select[Sns[[i]],(First[Canonical[j,#]]== 0)&],{i,1,N1-1},{j,2,N1-1}];
 QuotientKernels[]:= Table[Select[Sns[[i]],(First[Canonical[j,#]]== 0)&],{i,1,N1},{j,1,N1}];
+
 QuotientKernelSpacings[]:= ((If[#=={},0,First[#]])& \[Congruent]( Differences \[Congruent] QuotientKernels[]));
 
 Extend[H1_,H2_]:=(H1\[CircleDot]H2)\[Backslash]H2;
+
 Extending[H1_,g_]:=(g\[CirclePlus]#)& /@ H1;
 Remove[H1,H2,Ns,g];
 
 
 (* ::Subsection:: *)
-(*Group criterias*)
-
-
-(* ::Subsection:: *)
-(*Undependent theory*)
-
-
-(* ::Subsubsection:: *)
-(*Elementwise*)
+(*Whole group*)
 
 
 MakeGroup[n_,quotientgroups_]:= Module[{t=0},
@@ -215,110 +187,69 @@ MakeGroup[n_,quotientgroups_]:= Module[{t=0},
 											Save[$HomeDirectory<>"\\makegrouplog.ma",runtime];
 										];
 					
-Remove[t,quotientgroups,n];
+Remove[t,quotientgroups,n,runtime];
+
+IsNormal = True; (* all cyclic groups are normal *)
+
+
+(* ::Subsection:: *)
+(*Instances*)
+
+
+MakeFullGroupInstance[n_,timing_]:= Module[{C0,C1},
+											C0 = {Zn,N0,N1,N2,Sns,Css};
+											MakeGroup[n,timing];
+											C1 = {Zn,N0,N1,N2,Sns,Css};
+											{Zn,N0,N1,N2,Sns,Css}=C0;
+											Return[C1];
+										]
+								
+InstanceQuotientgroups[n_,timing_]:= Map[First,MakeFullGroupInstance[n,timing][[6]],{3}];
+Remove[C0,C1,n,x1,x2,timing];
+
+QuotientPermutationGroup[n_,m_]:= PermutationGroup[CyclesMap[] /@ QuotientGroup[n,m]]
+QuotientPermutationGroup[m_]:= PermutationGroup[CyclesMap[] /@ QuotientGroup[N1,m]]
+Remove[n,m];																																										
+
+
+(* ::Subsection:: *)
+(*Derived sets*)
+
+
+Cosets[k_,l_]:= Return[AdditiveGroupQuotients`Private`CosetsLeft[k,l]]
+Cosets[k_]:= Cosets[1,k]
+Remove[k,l];
 
 Coset[k_,r_]:= SelectFirst[Cosets[k],MemberQ[#,r]&]
 Remove[k,r];
 
-CosetByInverse[k_,g_]:= Sort[(SuperMinus[g]\[CirclePlus]#)& /@ Sns[[k]]]
-Remove[k,g];
-
-
-
-(* ::Subsubsection:: *)
-(*Subsets*)
-
-
-(* ::Subsubsection:: *)
-(*Independent instances*)
-
-
-(* ::Subsection:: *)
-(*Theory*)
-
-
-(* ::Subsubsection:: *)
-(*Elementwise*)
-
-
-(* ::Subsubsection:: *)
-(*Subsets*)
-
-
-(* ::Subsubsection:: *)
-(*Derived sets*)
-
-
-CosetsLeft[k_,l_]:= With[{HS=Sns,G=Sns[[k]],H=Sns[[l]]},
-									If[k<=N1\[Or]l>=k,None,Print["Indexing error"]; Return[-1]];
-									Module[{g,coset={},cosets={},i},
-										For[i=1,i<=Length[G],i++,
-											g=G[[i]];
-											coset=Sort[(g\[CirclePlus]#)&/@H];
-											cosets=cosets\[Union]{coset};
-											coset={};
-										];
-										Return[cosets];]]
-CosetsLeft[k_]:= CosetsLeft[1,k]
-Remove[HS,G,H,k,l,g,coset,cosets];
-
-IsNormal = True; (* all cyclic groups are normal *)
-
-Cosets[k_,l_]:= If[IsNormal,Return[CosetsLeft[k,l]],Print["not commutative group"];Return[-1]]
-Cosets[k_]:= Cosets[1,k]
-Remove[k,l];
-
 CosetsPowerSets[]:= If[Css=={},Table[Cosets[i,j],{i,1,N1},{j,i,N1}],Return[Css]]
-
-CosetSizes[]:= Length \[Congruent] CosetsPowerSets[]
-CosetNumbers[]:= (N0/Length[#])& \[Congruent] CosetsPowerSets[]
-
-CosetSizeMinima[]:= With[{L=CosetSizes[]}, 
-									Table[
-										If[AdditiveGroupQuotients`Private`dipp[#],-1,0,0]& /@ Partition[L[[i]],3,1],
-											{i,1,N1-2}]]
-CosetSizeMaxima[]:= With[{L=CosetSizes[]}, 
-									Table[
-										If[AdditiveGroupQuotients`Private`peak[#],1,0,0]& /@ Partition[L[[i]],3,1],
-											{i,1,N1-2}]]
-CosetSizeExtremes[]:= CosetSizeMaxima[] + CosetSizeMinima[]
-Remove[L];
 											
-Index[k_,l_]:= If[IsNormal,Return[Length[CosetsLeft[k,l]]],Print["not commutative group"];Return[-1]]
-Index[k_]:= Index[1,k];
-Remove[k,l];
-
-Indexes[]:= Index[1,#]&/@Range[N1];
-
 QuotientGroup[k_,l_]:= First /@ AdditiveGroupQuotients`Private`QuotientGroupFull[k,l]
  
 QuotientGroups[]:= Map[First,AdditiveGroupQuotients`Private`QuotientGroupsFull[],{3}]
-																		
-QuotientGroupTable[n_,m_] := With[{H=QuotientGroup[n,m]},
-								Module[{r=N0,mtable},
-										N0=H[[-1]]+(H[[-1]]-H[[-2]]);
-										mtable=Table[H[[i]]\[CirclePlus]H[[j]],{i,1,Length[H]},{j,1,Length[H]}];
-										N0=r;
-										Return[mtable];
-									]];
-Remove[n,m,H,r,mtable];
 
-QuotientGroupGenerators[]:= (#[[2]])& \[Congruent](Rest /@ QuotientGroups[][[1;;-2]])							
-QuotientGroupLasts[]:= (#[[-1]])& \[Congruent](QuotientGroups[][[1;;-2]])		
-QuotientGroupSizes[]:= Length \[Congruent] QuotientGroups[]
-QuotientGroupsRanks[] := Print["not implemented yet"]					
-																											
-QuotientPermutationGroups[]:= Table[PermutationGroup[CyclesMap[] /@ (QuotientGroup[i,j])],{i,1,N1},{j,i,N1}]
-QuotientGroupsPartition[]:= Table[ {(QuotientGroup[#,i]& /@ Range[1,i]),
-									 None,
-									(QuotientGroup[i,#]& /@ Range[i,N1])},{i,1,N1}]
+Indexes[]:= AdditiveGroupQuotients`Private`Index[1,#]&/@ Range[N1];
+																																				
+QuotientGroupGenerators[]:= (#[[2]])& \[Congruent](Rest /@ QuotientGroups[][[1;;-2]])
 
-QuotientPGroupGenerators[]:= GroupGenerators \[Congruent] QuotientPermutationGroups[]
-QuotientPGroupSizes[]:= GroupOrder \[Congruent] QuotientPermutationGroups[]
-QuotientPGroupRanks[]:= Length \[Congruent] QuotientPGroupGenerators[]
-QuotientPGroupTables[]:= (MatrixForm@*GroupMultiplicationTable) \[Congruent] QuotientPermutationGroups[]
-QuotientPGroupReduction[]:={GroupOrder[#]->Length[GroupGenerators[#]]}& \[Congruent] QuotientPermutationGroups[]
-QuotientPGroupRedundancies[]:=(GroupOrder[#]/Length[GroupGenerators[#]])& \[Congruent] QuotientPermutationGroups[]
+QuotientGroupsRanks[] := Return["Not implemented"];
+
+RelabelElements[G_,op_]:=With[{n=Length[G],relabelingmap=AssociationThread[G,Range[0,Length[G]-1]]},
+							Module[{multiplicationtable},
+									multiplicationtable=Table[op[G[[i]],G[[j]]],{i,1,n},{j,1,n}];
+									Return[multiplicationtable/.relabelingmap];
+							]]
+
+IsomorphicCyclicGroup[G_]:=If[Length[G]==1,Return[G],AdditiveGroupQuotients`Private`IsomorphicGroup[G,Mod[#,G[[-1]]+(G[[-1]]-G[[-2]])]& @* Plus]]
+
+
+(* ::Subsection::Closed:: *)
+(*Structure and graphical overview*)
+
+
+CosetSizeExtremes[]:= AdditiveGroupQuotients`Private`CosetSizeMaxima[] + AdditiveGroupQuotients`Private`CosetSizeMinima[]
+Remove[L];
 
 
 (* ::Subsection:: *)
@@ -326,6 +257,35 @@ QuotientPGroupRedundancies[]:=(GroupOrder[#]/Length[GroupGenerators[#]])& \[Cong
 
 
 Begin["`Private`"];
+	IsomorphicGroup::usage = " The group isomorphic to the group under a homomorphism.";
+	IsomorphicGroup[G_,op_]:=If[Length[G]==1,Return[G],Return[RelabelElements[G,op][[1]]]] (* first row if common modular addition *)
+
+	CosetsLeft::usage = " Int,Int[,Int] --> {{Int}}  |  The left cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
+	CosetsLeft[k_,l_]:= With[{HS=Sns,G=Sns[[k]],H=Sns[[l]]},
+										If[k<=N1\[Or]l>=k,None,Print["Indexing error"]; Return[-1]];
+										Module[{g,coset={},cosets={},i},
+											For[i=1,i<=Length[G],i++,
+												g=G[[i]];
+												coset=Sort[(g\[CirclePlus]#)&/@H];
+												cosets=cosets\[Union]{coset};
+												coset={};
+											];
+											Return[cosets];]]
+	CosetsLeft[k_]:= CosetsLeft[1,k]
+	Remove[HS,G,H,k,l,g,coset,cosets];
+	
+	CosetSizeMinima[]:= With[{L=CosetSizes[]}, 
+									Table[
+										If[AdditiveGroupQuotients`Private`dipp[#],-1,0,0]& /@ Partition[L[[i]],3,1],
+											{i,1,N1-2}]]
+	CosetSizeMaxima[]:= With[{L=CosetSizes[]}, 
+									Table[
+										If[AdditiveGroupQuotients`Private`peak[#],1,0,0]& /@ Partition[L[[i]],3,1],
+											{i,1,N1-2}]]
+
+	Index[k_,l_]:= If[IsNormal,Return[Length[CosetsLeft[k,l]]],Print["not commutative group"];Return[-1]]
+	Index[k_]:= Index[1,k];
+	Remove[k,l];
 
 	dipp::usage = " Int,Int,Int  --> True|False  |  Returns true if the middle value is strictly the smallest of the three given.";
 	peak::usage = " Int,Int,Int  --> True|False  |  Returns true if the middle value is strictly the largest of the three given.";
@@ -379,7 +339,7 @@ Begin["`Private`"];
 End[];
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 

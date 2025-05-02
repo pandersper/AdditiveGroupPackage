@@ -25,35 +25,49 @@ Remove[str,package]
 
 
 N0::usage = " Int  |  Modulus of the operators and size of Zn."; 
+
 N1::usage = " Int  |  Number of subgroups in Zn. Modulus of the total quotient group operator."; 
 
 Zn::usage = " {Int}  |  List of the elements in the additive group modulo N0.";
+
 Sns::usage = " {{Int}}  |  Subgroups of the group currently in use.";
 
 CirclePlus::usage = " Int,Int --> Int  |  Group operator (addition).";
+
 SuperMinus::usage = " Int --> Int  |  The inverse of g modulo N0.";
 
 MakeMinimalGroup::usage = " Int --> Null  |  Computes an additive group of order n and also precomputes it's subgroups. All variables it computes is global to current context.";
-MakeMinimalGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  |  Computes an additive group instance containing also it's subgroups, though not it's quotient groups.\
-																			    It temporarily alters but restores the current context.";
+
+
+(* ::Subsubsection:: *)
+(*Independent instances*)
+
+
+MakeMinimalGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  |  Computes an additive group instance containing also it's subgroups, though not it's quotient groups."<>
+																			   " It temporarily alters but restores the current context.";
 InstanceSubgroups::usage = " Int -->  {{Int}}  |  Returns the subgroups of the additive group of a given order. It temporarily alters but restores the current context group.";
 
 
 (* ::Subsection:: *)
-(*Properties of single elements in the group*)
+(*Elementwise*)
 
 
 ElementOrder::usage = " Int,Int--> Int  | The order of an element in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
 ElementOrders::usage = " Int -->  Int  |  All the orders of the elements in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 
 (* ::Subsection:: *)
-(*Subsets and their properties*)
+(*Subsets*)
 
 
 Subgroups::usage = " {{Int}}  |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
 SubgroupsAndGenerator::usage = " <|Int -> {Int}|>   |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) mapped to by their generator as key.";
+
 SubgroupGenerators::usage = " {Int}  |  The generators of all subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) given in subgroup size order.";
+
+Zeros::usage = " The zeros of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 
 (* ::Subsection:: *)
@@ -61,31 +75,24 @@ SubgroupGenerators::usage = " {Int}  |  The generators of all subgroups of \!\(\
 
 
 CayleyTable::usage = " Int --> SquareMatrix[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
 CayleyTable::usage = " {Int},(Int,Int -> Int) --> Grid[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 Docs::usage = "Documentation of a package as an association between method names and their usage descriptions. Argument one of \"Minimal\",\"Basic\",\"\", \"Quotients\",\"Theorems\".";
 
-(* ::Section:: *)
+
+(* ::Section::Closed:: *)
 (*Code*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Operators, constants  and primitive sets and mappings*)
 
 
 CirclePlus:= AdditiveGroupMinimal`Private`ModularAddition
+
 SuperMinus[g_]:= Mod[-g,N0]
-
 Remove[g];
-
-
-(* ::Subsection:: *)
-(*Undependent theory*)
-
-
-(* ::Subsubsection:: *)
-(*Elementwise*)
-
 
 MakeMinimalGroup[n_]:= Module[{t},
 							Zn={};N0=0;Sns={};N1=0;Css={};N2=0;
@@ -118,16 +125,9 @@ MakeMinimalGroup[n_]:= Module[{t},
 							Save[$HomeDirectory<>"\\makegrouplog.ma",runtime];
 						]
 Remove[t,n];
-							
-ElementOrder[g_]:= Module[{order=1,h=g},
-							If[g==0,Return[1],None];
-							While[h!=0, h=h\[CirclePlus]g;order++];
-							Return[order];
-						]
-Remove[order,h,g];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Independent instances*)
 
 
@@ -143,58 +143,48 @@ InstanceSubgroups[n_]:= MakeMinimalGroupInstance[n][[5]];
 Remove[C0,C1,n,x1,x2];
 
 
-(* ::Subsection:: *)
-(*Theory*)
-
-
-(* ::Subsubsection:: *)
+(* ::Subsection::Closed:: *)
 (*Elementwise*)
 
+
+ElementOrder[g_]:= Module[{order=1,h=g},
+							If[g==0,Return[1],None];
+							While[h!=0, h=h\[CirclePlus]g;order++];
+							Return[order];
+						]
+Remove[order,h,g,Css];
 
 ElementOrders[]:= Association[#->ElementOrder[#]& /@ Zn]
 
 
-(* ::Subsubsection:: *)
+(* ::Subsection::Closed:: *)
 (*Subsets*)
 
 
-(* * * subgroups * * *)
+Subgroups[]:=Subgroups[N0]
+
+Subgroups[k_]:= ReverseSort[DeleteDuplicates[Union[{0},#1]& /@ AdditiveGroupMinimal`Private`Subcycles[k]]];
+Remove[k];
+
 SubgroupsAndGenerator[]:= Union[{0},#]& /@ AdditiveGroupMinimal`Private`SubcycleAndGenerator[]
 
 SubgroupGenerators:= Sort@*Keys@*SubgroupsAndGenerator
 
-Subgroups[]:=Subgroups[N0]
-
-(* * * lossy faster versions * * *)
-Subgroups[k_]:= ReverseSort[DeleteDuplicates[Union[{0},#1]& /@ AdditiveGroupMinimal`Private`Subcycles[k]]];
-Remove[k];
+Zeros[]:= Table[{Zn[[i]],SuperMinus[Zn[[i]]]},{i,1,N0}]
+Remove[i]
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
-CayleyTable[]:= Module[{G=Zn,M={},row,i},
-							For[i=1,i<=N0,i++,
-								row=(G[[i]]\[CirclePlus]#1)& /@ G;
-								AppendTo[M,row]
-							];
-							Return[Grid[M/.(0->Item[0,Frame->True])]];
-						]
-Remove[G,M,row,i];
+CayleyTable[]:= CayleyTable[Zn,CirclePlus]
 
-CayleyTable[G_,op_]:= Module[{M={},row,i},
-								For[i=1,i<=Length[G],i++,
-									row=op[G[[i]],#1]&/@G;
-									If[!AtomQ[row[[1]]],row=Sort/@row,None];
-									AppendTo[M,row]
-								];
-								Return[Grid[M/.G[[1]]->Item[G[[1]],Frame->True]]];
-							]
-Remove[G,op,M,row,i];							
+CayleyTable[G_,op_]:= Grid[Table \.08[op[G[[i]],G[[j]]],{i,1,Length[G]},{j,1,Length[G]}]/.(0->Item[0,Frame->True])]
+Remove[G,op,i,j];							
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Helpers*)
 
 
@@ -213,8 +203,7 @@ Subcycles::usage = "Int|Int,Int --> {{Int},{Int}}  |  Repeated addition by the s
 													  "Like previous method but does not compute subcycles larger than the second argument given.";
 Subcycles[]:= Subcycles[N0]
 
-SubcycleAndGenerator::usage = "Int --> <|Int -> {Int}|>   |  Association between generators and their subcycles.";		
-Subcycles[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
+Subcycles_old[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
 										zero=G[[1]]; 
 										cyclics ={{zero}};
 										For[i=2,i<=N0,i++,
@@ -228,7 +217,24 @@ Subcycles[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
 										Return[cyclics];
 									]]
 Remove[G,zero,g,g0,cyclic,cyclics,i,k]
+
+Subcycles[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
+										zero=G[[1]]; 
+										cyclics ={};
+										For[i=2,i<=N0,i++,
+											cyclic={};
+											g0=G[[i]];
+											g=g0;
+											While[g!=zero\[And]Length[cyclic]<=k,AppendTo[cyclic,g];g=g\[CirclePlus]g0;];
+											cyclic=Sort[cyclic];
+											If[Length[cyclic]>=k\[Or]MemberQ[cyclics,cyclic],None,AppendTo[cyclics,cyclic]];
+										];
+										AppendTo[cyclics,{zero}];
+										Return[cyclics];
+									]]
+Remove[G,zero,g,g0,cyclic,cyclics,i,k]
 																
+SubcycleAndGenerator::usage = "Int --> <|Int -> {Int}|>   |  Association between generators and their subcycles.";		
 SubcycleAndGenerator[]:= With[{Cs=Subcycles[]},
 								Return[Association[MapThread[(#1->#2)&,{Min/@Cs,Cs}]]];]
 Remove[k,Cs]
@@ -241,4 +247,4 @@ End[];
 
 
 EndPackage[];
-Remove[runtime,N2]
+Remove[runtime,Css,N2]

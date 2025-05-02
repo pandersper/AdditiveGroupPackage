@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Additive Groups Basics Package*)
 
 
@@ -19,90 +19,65 @@ Print["AdditivegroupBasics`: See Docs[\"Basics\"] for documentation."]
 (*Documentation*)
 
 
-(* ::Subsection:: *)
-(*Operators, constants  and primitive mappings*)
+(* ::Subsection::Closed:: *)
+(*Operators, constants  and primitive sets and mappings*)
 
 
-(* ::Subsection:: *)
-(*Subsets and their properties*)
+Diamond::usage = " Modular addition on cosets with cosets preserved as elements, not representatives.";
 
 
-Zeros::usage = " The zeros of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+(* ::Subsection::Closed:: *)
+(*Subsets*)
+
+
 SubgroupOrders::usage = " {Int}  |  All orders of the subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
 GeneratorsAndOrder::usage = "  <|Int -> Int|>  |  Returns an association of generators and their respective order.";
-NonUnitMinimalSubgroupGenerators::usage = " Int --> {Int}  |  The subgroup generators except the trivial ones, 0 and 1.";
+
 ZeroMeetingSubgroups::usage = " {{Int},{Int}}}  |  Pair of subgroups that only have the zero element in common.";
 
+SubgroupProducts::usage = " {{Int}}  |  Returns the matrix i.e the multiplication table of all products of two subgroups.";
 
-(* ::Subsection:: *)
+SubgroupIntersections::usage = " {{Int}}  |  Returns the matrix i.e the multiplication table of all intersections of two subgroups.";
+
+
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
 Containment::usage = " Int --> {{Int}}  |  All subgroups that contains a subgroup. The subgroup argument is given as a size-order index. NOTE: the groups in a containment"<>
 										  " does not contain each other consecutively. Compare with SubsettingPaths in main package.";
-ContainmentNonTrivial::usage = " Int --> {{Int}}  |  Like Containment but with trivial subgroups removed. Se Containment.";
-
-ContainmentHierarchy::usage = " {{{Int}}}  |  Table of all containments of every subgroup.";
-ContainmentHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHierarchy but with trivial subgroups removed.";
 
 ContainmentIndexes::usage = " Int --> {Int}  |  Like Containment but returns the size-order indexes of the subgroups only.";
-ContainmentIndexesNonTrivial::usage = " Int --> {Int}  |  Like ContainmentIndexes but trivial subgroups are removed.";
-ContainmentIndexesHierarchy::usage = " {{Int}} |  Like ContainmentHierarchy but returns the size-order indexes instead of the subgroups themselves.";
-ContainmentIndexesHierarchyNonTrivial::usage = " {{Int}}  |  Like ContainmentHieracy but trivial subgroups are removed.";
 
-ContainmentSizes::usage = " {Int}  | The sizes of the subgroups in all containments.";
 ContainmentGenerators::usage = " {Int}  |  The generators of subgroups in the containment of a subgroup.";
-
-ContainmentMatrix::usage = " Int -> {{Int}}  |  Matrix of common elements of subgroups in a containment.";
 
 HasseDiagram::usage = " Int|[] --> {{1|0},{{Int}}} |  "<>
 								" Adjancy matrix describing the HasseDiagram of the current group's subgroups together with a table of the subgroups"<>
 								" concerned. The output is indented to be given to HasseGraph for displaying the HasseDiagram graph of the groups subgroup."<>
 								" If an argument integer is given only subgroups of order less than the argument is computed (incomplete to inspect"<>
 								" the first parst of the Hassediagram for large groups).";
+								
+ShortestHassePath::usage = " {<|Int->{Int}|>}  |  The shortest path in the Hasse diagram of \!\(\*SubscriptBox[\(Z\), \(n\)]\). Association of rules of group indexes to groups. See HasseGraphEdges.";
+LongestHassePath::usage = " {Int}  |  The longest path in the Hasse diagram of \!\(\*SubscriptBox[\(Z\), \(n\)]\). Association of rules of group indexes to groups. See HasseGraphEdges.";
+
+ShortestHasseGeneratorPath::usage = " {<|Int->Int|>}  |  The shortest paths of generator extensions in the Hasse diagram of \!\(\*SubscriptBox[\(Z\), \(n\)]\). List of associations between group index and generator. See HasseGraphEdges.";
+LongestHasseGeneratorPath::usage = " {<|Int->Int|>} |  The longest paths of generator extensions in the Hasse diagram of \!\(\*SubscriptBox[\(Z\), \(n\)]\).  List of associations between group index and generator. See HasseGraphEdges.";
 
 
 (* ::Section:: *)
 (*Code*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Operators, constants  and primitive sets and mappings*)
 
 
 Diamond:=AdditiveGroupBasics`Private`ModularAdditionDirect
-
 Remove[gs1,gs2]
 
 
-(* ::Subsection:: *)
-(*Undependent theory*)
-
-
-(* ::Subsubsection:: *)
-(*Elementwise*)
-
-
-(* ::Subsubsection:: *)
-(*Subsets*)
-
-
-Zeros[]:= With[{G=Zn},Module[{M={},i},
-								For[i=1,i<=N0,i++,
-									AppendTo[M,{G[[i]],SuperMinus[G[[i]]]}]];
-								Return[M];]]
-Remove[G,i]
-
-
-(* ::Subsection:: *)
-(*Theory*)
-
-
-(* ::Subsubsection:: *)
-(*Elementwise*)
-
-
-(* ::Subsubsection:: *)
+(* ::Subsection::Closed:: *)
 (*Subsets*)
 
 
@@ -125,14 +100,19 @@ ZeroMeetingSubgroups[]:= Module[{nonzeros,pairs={},unique,i,j},
 										Return[Prepend[#,0]& \[Congruent] unique]]
 Remove[nonzeros,pairs,unique,i,j]
 
+SubgroupProducts[]:=Table[Sns[[i]]\[CirclePlus]Sns[[j]],{i,1,N1},{j,1,N1}]
+Remove[i,j]
 
-(* ::Subsection:: *)
+SubgroupIntersections[]:=Table[Sns[[i]]\[Intersection]Sns[[j]],{i,1,N1},{j,1,N1}]
+Remove[i,j]
+
+
+(* ::Subsection::Closed:: *)
 (*Structure and graphical overview*)
 
 
 (* * * subset sequences * * *)
 Containment[k_]:= Sns[[ContainmentIndexes[k]]]
-ContainmentNonTrivial[k_]:= Sns[[ContainmentIndexesNonTrivial[k]]];
 
 ContainmentIndexes[k_]:= With[{HS=Sns},
 								Module[{H,contained,containing={}},
@@ -144,32 +124,10 @@ ContainmentIndexes[k_]:= With[{HS=Sns},
 											,{i,1,Length[HS]}];
 										Return[containing];]]
 Remove[k,HS,H,contained,containing]
-									
-ContainmentIndexesNonTrivial[k_]:= With[{HS=Sns[[2;;-2]]},
-									Module[{H,contained,containing={}},
-												contained=HS[[k]];
-												Table[H=HS[[i]];
-													If[ContainsAll[H,contained],
-														AppendTo[containing,i+1],
-														None];
-													,{i,1,Length[HS]}];
-												Return[containing];]]
-Remove[k,HS,H,contained,containing]
 
-ContainmentHierarchyNonTrivial[]:=Table[ContainmentNonTrivial[k],{k,1,N1-2,1}]
-Remove[k];
-
-ContainmentHierarchy[]:=Table[Containment[i],{i,1,N1}];
-ContainmentIndexesHierarchy[]:=Table[ContainmentIndexes[i],{i,1,N1}];
-ContainmentIndexesHierarchyNonTrivial[]:=Table[ContainmentIndexesNonTrivial[k],{k,1,N1-2,1}]
-Remove[i,k]
-
-ContainmentSizes[]:= Length /@ Containment[#]& /@ Range[N1]
 ContainmentGenerators[k_]:= SubgroupGenerators[][[ContainmentIndexes[k]]]
 Remove[k]
-
-NonUnitMinimalSubgroupGenerators[]:= Sort[#[[2]]& /@ (Last /@ ContainmentHierarchyNonTrivial[])]
-						
+															
 HasseDiagram[m_] := With[{HS=Reverse[Subgroups[m]]}, 
 							Module[{M,K,i,j,l,connected},
 									l=Length[HS];
@@ -185,8 +143,49 @@ Remove[m,HS,M,K,i,j,l,connected]
 							
 HasseDiagram[] := HasseDiagram[N0]
 
+ShortestHassePath[]:= With[{MHS=HasseDiagram[]},Module[{M,HS,A,G,VS,ES,lmin,p,ps},
+			
+									M=MHS[[1]]; HS=MHS[[2]];
+									
+									A = AdjacencyGraph[M,DirectedEdges->True];
+									ES = EdgeList[A]; VS = VertexList[A];
+																		
+									G=Graph[ES, EdgeWeight -> {_ -> 1}];									
+									
+									p=FindShortestPath[G,VS[[1]],VS[[-1]]];
+									lmin = Length[p];
+									ps = FindPath[G,VS[[1]],VS[[-1]],{lmin-1},Infinity];
+									
+									Return[AssociationMap[HS[[#]]&,##]&/@ps];
+								]]
 
-(* ::Subsection:: *)
+ShortestHasseGeneratorPath[]:= ShortestHassePath[]/.KeyValueMap[(#2->#1)&,SubgroupsAndGenerator[]]
+
+LongestHassePath[]:= With[{MHS=HasseDiagram[]}, Module[{M,HS,A,G,VS,ES,lmin,p,ps},
+
+									M=MHS[[1]]; HS=MHS[[2]];
+								
+									A = AdjacencyGraph[M,DirectedEdges->True];
+									ES = EdgeList[A]; VS = VertexList[A];
+									
+									G = Graph[ES, EdgeWeight -> {_ -> 1}];									
+								
+									p=FindShortestPath[G,VS[[1]],VS[[-1]]];
+									lmin = Length[p];
+									ps = FindPath[G,VS[[1]],VS[[-1]],{lmin,Length[VS]},Infinity];
+									ps = Select[ps,(Length[#]== Max[Length /@ ps])&];
+									
+									If[ps=={},
+										Return[ShortestFactorisations[n]],
+										Return[AssociationMap[HS[[#]]&,##]&/@ps]];
+								]]
+
+LongestHasseGeneratorPath[]:= LongestHassePath[]/.KeyValueMap[(#2->#1)&,SubgroupsAndGenerator[]]
+Remove[M,HS,A,G,VS,ES,lmin,p,ps];
+
+
+
+(* ::Subsection::Closed:: *)
 (*Helpers*)
 
 
@@ -235,18 +234,8 @@ Remove[k,all,leading,trailing,xs]
 End[];
 
 
-(* ::Subsection:: *)
-(*Seldom used and helpers*)
-
-
-ContainmentMatrix[k_]:= With[{all=Containment[k]},Module[{n=Length[all]},
-							Return[Table[If[ContainsAll[all[[i]],all[[j]]]\[Or]ContainsAll[all[[j]],all[[i]]],i,0],{i,1,n},{j,1,n}]];]]
-Remove[k,n,all,i,j]							
-
-
 (* ::Section::Closed:: *)
 (*Author: Anders Persson (persssonandersper@gmail.com)*)
 
 
 EndPackage[];
-
