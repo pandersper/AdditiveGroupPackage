@@ -13,7 +13,7 @@ BeginPackage["AdditiveGroupQuotients`"];
 << AdditiveGroup`
 
 
-AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit, the AdditiveGroup package suite. It adds quotient group functionality which "<>
+AdditiveGroupQuotientsPackage::usage = "This is is the fourth module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite, the AdditiveGroup package suite. It adds quotient group functionality which "<>
 										" takes theory to higher grounds and prepares for the classical theorems.";
 										
 Print["AdditivegroupQuotients`: See Docs[\"Quotients\"] for documentation."]
@@ -28,22 +28,24 @@ Off[Image::shdw]
 (*Operators, constants  and primitive set and mappings	*)
 
 
-Css::usage = " {{{Int}}}  |  Cosets of all quotient groups constructible by the subgroups of Zn.";
+Css::usage = " {{{Int}}}  \n  Constant acces too the cosets of all quotient groups constructible by the subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). See CosetsPowerSet.";
 
-CircleDot::usage = "  {Int},{Int} --> {Int} |  The operator giving the product set (subgroup) of two sets (subgroups) of sets(cosets). "<>
+N2::usage = "  Int  \n  The number of quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+
+CircleDot::usage = "  {Int},{Int} --> {Int} \n  The operator giving the product set (subgroup) of two sets (subgroups) of sets(cosets). "<>
 											  " All members (cosets) are added to each other respectively.";
 
-SmallCircle::usage = "  {Int},{Int} --> {Int} |  Like CircleDot but  uses \[Diamond] instead of \[CirclePlus].";
+SmallCircle::usage = "  {Int},{Int} --> {Int} \n  Like CircleDot but  uses \[Diamond] instead of \[CirclePlus].";
 
-Backslash::usage = "  {Int},{Int} --> {{Int}} |  The quotient group of two groups. Most often the second argument is a subgroup of the first but most important is that they both have a common supergroup.";
+Backslash::usage = "  {Int},{Int} --> {{Int}} \n  The quotient group of two groups. Most often the second argument is a subgroup of the first but most important is that they both have a common supergroup.";
 
-Canonical::usage = " Int --> {Int}  |  The canonical isomophism which takes an element to the coset it is a representative for.";
+Canonical::usage = " Int --> {Int}  \n  The canonical isomophism which takes an element to the coset it is a representative for.";
 
-Kernel::usage = "  {Int}  |  The elements in the domain that a homomorphism maps to the zero element in the image.";	
+Kernel::usage = "  {Int}  \n  The elements in the domain that a homomorphism maps to the zero element in the image.";	
 
-QuotientKernels::usage = " {{Int}}  |  The kernels of all quotient groups. ";
+QuotientKernels::usage = " {{Int}}  \n  The kernels of all quotient groups in full \!\(\*SubscriptBox[\(Z\), \(n\)]\). ";
 
-QuotientKernelSpacings::usage = " {{Int}}  |  The distance (difference) between elements of all quotient group's kernels.";
+QuotientKernelSpacings::usage = " {{Int}}  \n  The distance (difference) between elements of all quotient group's kernels.";
 
 Extend::usage = " Brevity operator for investigating left hand side of second isomorphy theorem. ";
 
@@ -54,60 +56,59 @@ Extending::usage = " Brevity operator for investigating coset multiplication. ";
 (*Whole group*)
 
 
-MakeGroup::usage = " Int,Bool --> Void  |  Constructs \!\(\*SubscriptBox[\(Z\), \(n\)]\) it's subgroups and if second argument is True also all the group's quotient groups are prepared.";
-
-IsNormal::usage = " Since \!\(\*SubscriptBox[\(Z\), \(n\)]\) is cyclic all groups concerned are Abelian. ";
+MakeGroup::usage = " Int,Bool --> Global`  \n  Constructs \!\(\*SubscriptBox[\(Z\), \(n\)]\) it's subgroups and if second argument is True also all the group's quotient groups are prepared.";
 
 
 (* ::Subsection:: *)
 (*Instances*)
 
 
-MakeFullGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  |  Computes an additive group instance containing it's subgroups and also it's quotient groups. This function temporarily "<>
+MakeFullGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  \n  Computes an additive group instance containing it's subgroups and also it's quotient groups. This function temporarily "<>
 																			" alters but restores the current context. If you only need it's subgroup use MakeMinimalGroupInstance instead. ";
 																		
-InstanceQuotientgroups::usage = " Int -->  {{Int}}  |  Returns the quotient groups of the additive group of a given order. It temporarily alters but restores the current context group.";
+InstanceQuotientgroups::usage = " Int -->  {{Int}}  \n  Returns the quotient groups of the additive group of a given order. It temporarily alters but restores the current context group.";
 
-QuotientPermutationGroup::usage  =  " Int|Int,Int --> PermutationGroup  |  The mathematica permutation group isomorphic with this package's quotient group of two subgroups.";
+QuotientPermutationGroup::usage  =  " Int|Int,Int --> PermutationGroup  \n  The mathematica permutation group isomorphic with this package's quotient group of two subgroups. If one argument only the full "<>
+																			"\!\(\*SubscriptBox[\(Z\), \(n\)]\) is used as the larger group.";
 
 
 (* ::Subsection:: *)
 (*Derived sets*)
 
 
-Coset::usage = " Int,Int,Int --> {Int}  |  The coset of \!\(\*SubscriptBox[\(Z\), \(n\)]\) with representant g.";
+Coset::usage = " Int,Int --> {Int}  \n   The coset of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\[Backslash]H for a representative. First argument is index of H and the second the representative as an alement.";
 
-Cosets::usage = " Int,Int[,Int] --> {{Int}}  |  The cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) if left and right cosets are same, otherwise -1. If no last argument the whole group is used.";
+Cosets::usage = " Int[,Int] --> {{Int}}  \n  The cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the full \!\(\*SubscriptBox[\(Z\), \(n\)]\) provides representatives for the group given as argument.";
 
-CosetsPowerSets::usage = " The set of all possible cosets in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+CosetsPowerSets::usage = " {{{{Int}}}}  \n  The set of all possible cosets formed by groups (and members in other groups) in \!\(\*SubscriptBox[\(Z\), \(n\)]\). (Css)";
 
-QuotientGroup::usage = " Int,Int[,Int] --> {Int}  |  The quotient group of two subgroups in \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
+QuotientGroup::usage = " Int,Int --> {Int}  \n  The quotient group G\[Backslash]H of two subgroups in \!\(\*SubscriptBox[\(Z\), \(n\)]\). Groups are given by index.";
 
-QuotientGroups::usage = " {{Int}}  |  All the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+QuotientGroups::usage = " {{Int}}  \n  All the quotient groups \!\(\*SubscriptBox[\(Z\), \(n\)]\)\[Backslash]H for all subgroups H of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
-Indexes::usage = " {Int}  |  All indexes in relation to the full group \!\(\*SubscriptBox[\(Z\), \(n\)]\). See Index.";
+Indexes::usage = " {Int}  \n  All indexes (quotient group members size) in relation to the full group \!\(\*SubscriptBox[\(Z\), \(n\)]\). See Index.";
 
-QuotientGroupGenerators::usage = " {Int}  |  The generators of the quotient groups in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+QuotientGroupGenerators::usage = " {Int}  \n  The generators for each H of the quotient groups \!\(\*SubscriptBox[\(Z\), \(n\)]\)\[Backslash]H in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
-QuotientGroupsRanks::usage = " {Int} | NOT IMPLEMENTED YET. WAITING FOR ELEGANT WAY TO COMPUTE IT. NOT JUST GENERATE IT BY BRUTE FORCE.";
+QuotientGroupsRanks::usage = " {Int}  \n  Not implemented. No elegant solution yet and dont want to just generate it by brute force. ";
 
-RelabelElements::usage = " Relabel elements of a group with as smal numbering as possible starting from zero as the smallest.";
+RelabelElements::usage = " {Int},(Int,Int->Int) --> {Int}  \n  Elements of a group relabeled with the simplest enumeration starting from zero as the label of the smallest element.";
 
-IsomorphicCyclicGroup::usage = " The cyclic group isomorphic to the cyclic group given. The homomorphism is implicit. ";
+IsomorphicCyclicGroup::usage = " {Int}  \n  The cyclic group isomorphic to the cyclic group given. The homomorphism is implicit. ";
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
-CosetSizeExtremes::usage = " {-1|0|1}  |  Indications of local maximum and minimum values of the coset lengths for all quotient groups.";
+CosetSizeExtremes::usage = " {-1|0|1}  \n  Indications of local maximum and minimum values of the coset lengths for all quotient groups.";
 
 
 (* ::Section:: *)
 (*Code*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Operators, constants  and primitive sets and mappings*)
 
 
@@ -189,8 +190,6 @@ MakeGroup[n_,quotientgroups_]:= Module[{t=0},
 					
 Remove[t,quotientgroups,n,runtime];
 
-IsNormal = True; (* all cyclic groups are normal *)
-
 
 (* ::Subsection:: *)
 (*Instances*)
@@ -207,8 +206,8 @@ MakeFullGroupInstance[n_,timing_]:= Module[{C0,C1},
 InstanceQuotientgroups[n_,timing_]:= Map[First,MakeFullGroupInstance[n,timing][[6]],{3}];
 Remove[C0,C1,n,x1,x2,timing];
 
-QuotientPermutationGroup[n_,m_]:= PermutationGroup[CyclesMap[] /@ QuotientGroup[n,m]]
-QuotientPermutationGroup[m_]:= PermutationGroup[CyclesMap[] /@ QuotientGroup[N1,m]]
+QuotientPermutationGroup[n_,m_]:= PermutationGroup[AdditiveGroupQuotients`Private`CyclesMap[] /@ QuotientGroup[n,m]]
+QuotientPermutationGroup[m_]:= PermutationGroup[AdditiveGroupQuotients`Private`CyclesMap[] /@ QuotientGroup[N1,m]]
 Remove[n,m];																																										
 
 
@@ -242,6 +241,7 @@ RelabelElements[G_,op_]:=With[{n=Length[G],relabelingmap=AssociationThread[G,Ran
 							]]
 
 IsomorphicCyclicGroup[G_]:=If[Length[G]==1,Return[G],AdditiveGroupQuotients`Private`IsomorphicGroup[G,Mod[#,G[[-1]]+(G[[-1]]-G[[-2]])]& @* Plus]]
+Remove[op,multiplicationtable,relabelingmap];
 
 
 (* ::Subsection::Closed:: *)
@@ -257,10 +257,11 @@ Remove[L];
 
 
 Begin["`Private`"];
+
 	IsomorphicGroup::usage = " The group isomorphic to the group under a homomorphism.";
 	IsomorphicGroup[G_,op_]:=If[Length[G]==1,Return[G],Return[RelabelElements[G,op][[1]]]] (* first row if common modular addition *)
 
-	CosetsLeft::usage = " Int,Int[,Int] --> {{Int}}  |  The left cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
+	CosetsLeft::usage = " Int[,Int] --> {{Int}}  |  The left cosets of two subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\). If no last argument the whole group is used.";
 	CosetsLeft[k_,l_]:= With[{HS=Sns,G=Sns[[k]],H=Sns[[l]]},
 										If[k<=N1\[Or]l>=k,None,Print["Indexing error"]; Return[-1]];
 										Module[{g,coset={},cosets={},i},
@@ -271,20 +272,20 @@ Begin["`Private`"];
 												coset={};
 											];
 											Return[cosets];]]
-	CosetsLeft[k_]:= CosetsLeft[1,k]
+	CosetsLeft[l_]:= CosetsLeft[1,l]
 	Remove[HS,G,H,k,l,g,coset,cosets];
 	
-	CosetSizeMinima[]:= With[{L=CosetSizes[]}, 
+	CosetSizeMinima[]:= With[{L=Length \[Congruent] CosetsPowerSets[]}, 
 									Table[
 										If[AdditiveGroupQuotients`Private`dipp[#],-1,0,0]& /@ Partition[L[[i]],3,1],
 											{i,1,N1-2}]]
-	CosetSizeMaxima[]:= With[{L=CosetSizes[]}, 
+	CosetSizeMaxima[]:= With[{L=Length \[Congruent] CosetsPowerSets[]}, 
 									Table[
 										If[AdditiveGroupQuotients`Private`peak[#],1,0,0]& /@ Partition[L[[i]],3,1],
 											{i,1,N1-2}]]
 
-	Index[k_,l_]:= If[IsNormal,Return[Length[CosetsLeft[k,l]]],Print["not commutative group"];Return[-1]]
-	Index[k_]:= Index[1,k];
+	Index[k_,l_]:= If[True,Return[Length[CosetsLeft[k,l]]],Print["not commutative group"];Return[-1]](*IsNormal=True*)
+	Index[l_]:= Index[1,l];
 	Remove[k,l];
 
 	dipp::usage = " Int,Int,Int  --> True|False  |  Returns true if the middle value is strictly the smallest of the three given.";

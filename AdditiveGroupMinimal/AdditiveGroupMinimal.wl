@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (* ::Section:: *)
-(*Additive Groups Minimal Package*)
+(*Additive Group Minimal Package*)
 
 
 PrependTo[$ContextPath,"Commons`"];
@@ -9,11 +9,10 @@ BeginPackage["AdditiveGroupMinimal`"];
 << Commons`
 
 
-AdditiveGroupMinimalPackage::usage = "This is the first module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suit. The AdditiveGroup package suite. "<>
-									"It contains the minimal functionality needed for investigating \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups.";
-					
+AdditiveGroupMinimalPackage::usage = "This is the first module of the \!\(\*SubscriptBox[\(Z\), \(n\)]\) package-suite. The AdditiveGroup package suite. " <>
+   									"It contains the minimal functionality needed for investigating \!\(\*SubscriptBox[\(Z\), \(n\)]\) and it's subgroups.";
+
 Print["AdditivegroupMinimal`: See Docs[\"Minimal\"] for documentation."];
-Remove[str,package]				
 
 
 (* ::Section:: *)
@@ -21,72 +20,66 @@ Remove[str,package]
 
 
 (* ::Subsection:: *)
-(*Operators, constants  and primitive mappings*)
+(*Constants, operators, constructors  and primitive mappings*)
 
 
-N0::usage = " Int  |  Modulus of the operators and size of Zn."; 
+N0::usage = " Int  \n  Modulus of the operators and size of \!\(\*SubscriptBox[\(Z\), \(n\)]\) that is n."; 
+N1::usage = " Int  \n  Number of subgroups in \!\(\*SubscriptBox[\(Z\), \(n\)]\). Modulus of the total quotient group operator."; 
 
-N1::usage = " Int  |  Number of subgroups in Zn. Modulus of the total quotient group operator."; 
+Zn::usage = " {Int}  \n  List of the elements in \!\(\*SubscriptBox[\(Z\), \(n\)]\) the additive group modulo N0.";
+Sns::usage = " {{Int}}  \n  Subgroups of the group currently in use.";
 
-Zn::usage = " {Int}  |  List of the elements in the additive group modulo N0.";
+CirclePlus::usage = " Int,Int --> Int  \n  Group operator (addition).";
+SuperMinus::usage = " Int --> Int  \n  The inverse of an element modulo N0.";
 
-Sns::usage = " {{Int}}  |  Subgroups of the group currently in use.";
-
-CirclePlus::usage = " Int,Int --> Int  |  Group operator (addition).";
-
-SuperMinus::usage = " Int --> Int  |  The inverse of g modulo N0.";
-
-MakeMinimalGroup::usage = " Int --> Null  |  Computes an additive group of order n and also precomputes it's subgroups. All variables it computes is global to current context.";
+MakeMinimalGroup::usage = " Int --> Global`  \n  Computes an additive group of order n and also precomputes it's subgroups. All variables it computes is global to current context.";
 
 
-(* ::Subsubsection:: *)
+(* ::Subsection:: *)
 (*Independent instances*)
 
 
-MakeMinimalGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  |  Computes an additive group instance containing also it's subgroups, though not it's quotient groups."<>
-																			   " It temporarily alters but restores the current context.";
-InstanceSubgroups::usage = " Int -->  {{Int}}  |  Returns the subgroups of the additive group of a given order. It temporarily alters but restores the current context group.";
+MakeMinimalGroupInstance::usage = " Int --> {{Int},Int,Int,Int,{Int},{Int}}  \n  Computes an additive group instance containing also it's subgroups, though not it's quotient groups." <>
+      																			   " It temporarily alters but restores the current context. It returns a 'context' given as a six-tuple" <>
+      																			   " {Zn,N0,N1,N2,Sns,Css} where N2 and Css are null in this module. See MakeGroupInstance in Quotients package." <>
+      																			   "See N0. See N1. See Sns.";
+InstanceSubgroups::usage = " Int -->  {{Int}}  \n  Returns the subgroups of the additive group of a given order. It temporarily alters but restores the current context group.";
 
 
 (* ::Subsection:: *)
 (*Elementwise*)
 
 
-ElementOrder::usage = " Int,Int--> Int  | The order of an element in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-
-ElementOrders::usage = " Int -->  Int  |  All the orders of the elements in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+ElementOrder::usage = " Int--> Int  \n The order of an element in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+ElementOrders::usage = " {Int}  \n  All the orders of the elements in \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
 
 
 (* ::Subsection:: *)
-(*Subsets*)
+(*Subsets and related elements*)
 
 
-Subgroups::usage = " {{Int}}  |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+Subgroups::usage = " {{Int}}  \n  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+SubgroupsAndGenerator::usage = " <|Int -> {Int}|>   \n  Mapping from the generators to the subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) .";
+SubgroupGenerators::usage = " {Int}  \n  The generators of all subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) given in subgroup size order.";
 
-SubgroupsAndGenerator::usage = " <|Int -> {Int}|>   |  The subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) mapped to by their generator as key.";
-
-SubgroupGenerators::usage = " {Int}  |  The generators of all subgroups of \!\(\*SubscriptBox[\(Z\), \(n\)]\) given in subgroup size order.";
-
-Zeros::usage = " The zeros of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+Zeros::usage = " The zeros \!\(\*SubscriptBox[\(ofZ\), \(n\)]\) given as pairs.";
 
 
 (* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
-CayleyTable::usage = " Int --> SquareMatrix[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
-
-CayleyTable::usage = " {Int},(Int,Int -> Int) --> Grid[Int]  |  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\).";
+CayleyTable::usage = " []|{Int},(Int,Int -> Int) --> Grid[Int]  \n  Multiplication table of \!\(\*SubscriptBox[\(Z\), \(n\)]\) or of some given group and operator.";
 
 Docs::usage = "Documentation of a package as an association between method names and their usage descriptions. Argument one of \"Minimal\",\"Basic\",\"\", \"Quotients\",\"Theorems\".";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Code*)
 
 
-(* ::Subsection::Closed:: *)
-(*Operators, constants  and primitive sets and mappings*)
+(* ::Subsection:: *)
+(*Constants, operators, constructors  and primitive mappings*)
 
 
 CirclePlus:= AdditiveGroupMinimal`Private`ModularAddition
@@ -127,7 +120,7 @@ MakeMinimalGroup[n_]:= Module[{t},
 Remove[t,n];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Independent instances*)
 
 
@@ -143,48 +136,47 @@ InstanceSubgroups[n_]:= MakeMinimalGroupInstance[n][[5]];
 Remove[C0,C1,n,x1,x2];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Elementwise*)
 
 
 ElementOrder[g_]:= Module[{order=1,h=g},
 							If[g==0,Return[1],None];
 							While[h!=0, h=h\[CirclePlus]g;order++];
-							Return[order];
-						]
+							Return[order];]
 Remove[order,h,g,Css];
 
 ElementOrders[]:= Association[#->ElementOrder[#]& /@ Zn]
 
 
-(* ::Subsection::Closed:: *)
-(*Subsets*)
+(* ::Subsection:: *)
+(*Subsets and related elements*)
 
 
 Subgroups[]:=Subgroups[N0]
-
 Subgroups[k_]:= ReverseSort[DeleteDuplicates[Union[{0},#1]& /@ AdditiveGroupMinimal`Private`Subcycles[k]]];
 Remove[k];
 
 SubgroupsAndGenerator[]:= Union[{0},#]& /@ AdditiveGroupMinimal`Private`SubcycleAndGenerator[]
-
 SubgroupGenerators:= Sort@*Keys@*SubgroupsAndGenerator
 
 Zeros[]:= Table[{Zn[[i]],SuperMinus[Zn[[i]]]},{i,1,N0}]
-Remove[i]
+Remove[i];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Structure and graphical overview*)
 
 
 CayleyTable[]:= CayleyTable[Zn,CirclePlus]
 
-CayleyTable[G_,op_]:= Grid[Table \.08[op[G[[i]],G[[j]]],{i,1,Length[G]},{j,1,Length[G]}]/.(0->Item[0,Frame->True])]
+CayleyTable[G_,op_]:= Grid[Table[op[G[[i]],G[[j]]],
+									{i,1,Length[G]},
+									{j,1,Length[G]}]/.(0->Item[0,Frame->True])]
 Remove[G,op,i,j];							
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Helpers*)
 
 
@@ -203,31 +195,19 @@ Subcycles::usage = "Int|Int,Int --> {{Int},{Int}}  |  Repeated addition by the s
 													  "Like previous method but does not compute subcycles larger than the second argument given.";
 Subcycles[]:= Subcycles[N0]
 
-Subcycles_old[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
+Subcycles[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics={},i},
 										zero=G[[1]]; 
-										cyclics ={{zero}};
 										For[i=2,i<=N0,i++,
 											cyclic={};
 											g0=G[[i]];
 											g=g0;
-											While[g!=zero\[And]Length[cyclic]<=k,AppendTo[cyclic,g];g=g\[CirclePlus]g0;];
+											While[g!=zero\[And]Length[cyclic]<=k,
+												AppendTo[cyclic,g];
+												g=g\[CirclePlus]g0;];
 											cyclic=Sort[cyclic];
-											If[Length[cyclic]>=k\[Or]MemberQ[cyclics,cyclic],None,AppendTo[cyclics,cyclic]];
-										];
-										Return[cyclics];
-									]]
-Remove[G,zero,g,g0,cyclic,cyclics,i,k]
-
-Subcycles[k_]:= With[{G=Zn},Module[{zero,g,g0,cyclic={},cyclics,i},
-										zero=G[[1]]; 
-										cyclics ={};
-										For[i=2,i<=N0,i++,
-											cyclic={};
-											g0=G[[i]];
-											g=g0;
-											While[g!=zero\[And]Length[cyclic]<=k,AppendTo[cyclic,g];g=g\[CirclePlus]g0;];
-											cyclic=Sort[cyclic];
-											If[Length[cyclic]>=k\[Or]MemberQ[cyclics,cyclic],None,AppendTo[cyclics,cyclic]];
+											If[Length[cyclic]>=k\[Or]MemberQ[cyclics,cyclic],
+												None,
+												AppendTo[cyclics,cyclic]];
 										];
 										AppendTo[cyclics,{zero}];
 										Return[cyclics];
@@ -242,9 +222,9 @@ Remove[k,Cs]
 End[];
 
 
-(* ::Section:: *)
-(*Author: Anders Persson (persssonandersper@gmail.com)*)
-
-
-EndPackage[];
 Remove[runtime,Css,N2]
+EndPackage[];
+
+
+(* ::Author:: *)
+(*Author: Anders Persson (persssonandersper@gmail.com)*)

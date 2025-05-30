@@ -32,16 +32,16 @@ Print["AdditivegroupTheorems`: See Docs[\"Theorems\"] for documentation."]
 (*Correspondence theorem*)
 
 
-CorrespondenceMap::usage = " <|{Int} -> {Int}|> |   The correspondence map for a given subgroup. Correspondence between subgroups containing the subgroup "<>
+CorrespondenceMap::usage = " <|{Int} -> {Int}|> \n   The correspondence map for a given subgroup. Correspondence between subgroups containing the subgroup "<>
 													"and quotient groups derived by letting larger groups taking quotients with it.";			
 															
-CorrespondenceMapIndexed::usage = " <| Int -> Int |>  |  Like CorrespondenceMap but all non-unique occurrences is displayed since indexes indexing same groups are used.";
+CorrespondenceMapIndexed::usage = " <| Int -> Int |>  \n  Like CorrespondenceMap but all non-unique occurrences is displayed since indexes indexing same groups are used.";
 
-CorrespondenceImageSizes::usage = " {Int}  |  The sizes )not orders( of all subgroups on the quotient group side of the correspondence theorem, the 'other' side.";
+CorrespondenceImageSizes::usage = " {Int}  \n  The sizes (not orders) of all subgroups on the quotient group side of the correspondence theorem, the 'other' side.";
 
-CorrespondenceFullGroupImages::usage = " {Int}  |  The images of the full group, that is on the quotient group side of the correspondence theorem, the 'other' side.";
+CorrespondenceFullGroupImages::usage = " {Int}  \n  The images of the full group, that is on the quotient group side of the correspondence theorem, the 'other' side.";
 
-Collisions::usage = " <| Int -> {{Int,Int}} |>  |  Parts of correspondence map that are non-unique. Where subgroups are mapped to by many  "<>
+Collisions::usage = " <| Int -> {{Int,Int}} |>  \n  Parts of correspondence map that are non-unique. Where subgroups are mapped to by many "<>
 												   " quotient groups. The latter are given as indices in the QuotientGroups matrix.";
 
 
@@ -49,50 +49,52 @@ Collisions::usage = " <| Int -> {{Int,Int}} |>  |  Parts of correspondence map t
 (*Isomorphism theorems*)
 
 
-ExtensionRelabeling::usage = " {{<|Int -> Int|>}}  |  Matrix consisting of maps for relabeling of elements to reveal the isomorphy of the left and right sides of the second isomorphy theorem."<>
+ExtensionRelabeling::usage = " {{<|Int -> Int|>}}  \n  Matrix consisting of maps for relabeling of elements to reveal the isomorphy of the left and right sides of the second isomorphy theorem."<>
 													 " Where there are no relabeling ";
 
-ExtensionTransformativeTerms::usage = " {<|Int->Int|>  |  List of the the non-zero-size indices in the extension relabeling matrix.";
+ExtensionTransformativeTerms::usage = " {<|Int->Int|>  \n  List of the the non-zero-size indices in the extension relabeling matrix.";
 
-ExtensionIsomorphy::usage = " {{Int}}  |  The cyclic isomorphic groups that concludes the isomorphies of the second isomorphism theorem.";
+ExtensionIsomorphy::usage = " {{Int}}  \n  The cyclic isomorphic groups that concludes the isomorphies of the second isomorphism theorem.";
 
-IntersectionsToProducts::usage = " {[Int}} -> {{Int}}  |  Proof-of-principle-methods of the reshufflability of the outputs of SubgroupProducts and SubgroupIntersection to each other. "<>
-														 "So in \!\(\*SubscriptBox[\(Z\), \(n\)]\) groupwise multiplication and intersections is interchangeable, that is does the same thing in some sense."<>
-														 " See AdditiveGroup`SubgroupProducts and AdditiveGroup`SubgroupIntersections.";
+IntersectionsToProducts::usage = " {[Int}} -> {{Int}}  \n  Proof-of-principle-methods of the reshufflability of the outputs of SubgroupProducts and SubgroupIntersection to each other. "<>
+								"So in \!\(\*SubscriptBox[\(Z\), \(n\)]\) groupwise multiplication and intersections is interchangeable, that is does the same thing in some sense."<>
+								" See AdditiveGroup`SubgroupProducts and AdditiveGroup`SubgroupIntersections.";
 														 
 ProductsToIntersections::usage = IntersectionsToProducts::usage;
 														 
-SecondIsomorphyLiftFactors::usage = " {{Int}}  |  The scalar quotients giving the expansion of groups going from lower side (intersections) to upper side (products) in the second isomorphy theorem "<>
-												" or the upper side of the diamond graph.";
+SecondIsomorphyLiftFactors::usage = " {{Int}}  \n  The scalar quotients giving the expansion of groups going from lower side (intersections) "<>
+									"to upper side (products) in the second isomorphy theorem  or the upper side of the diamond graph.";
 																											
-ThirdIsomorphyTrippels::usage = " Int,Int,Int -> {{Int},{Int},{int}}  |  The representatives set of the nominator, denominator and the quotient on the other "<>
-														" side of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\\!\(\*SubscriptBox[\(Z\), \(m\)]\) in the equation of the third isomorphy theorem.";
+ThirdIsomorphyTrippels::usage = " Int,Int,Int -> {{Int},{Int},{int}}  \n  The representatives set of the nominator, denominator and the quotient on the other "<>
+								" side of \!\(\*SubscriptBox[\(Z\), \(n\)]\)\\!\(\*SubscriptBox[\(Z\), \(m\)]\) in the equation of the third isomorphy theorem.";
 
-ThirdIsomorphyMappingIndexToIso::usage = " Int,Int,Int -> {Int->{Int},Int->{Int},int->{Int}}  |  Mapping between the respective nominators, denominators and the full quotient "<>
+ThirdIsomorphyMappingIndexToIso::usage = " Int,Int,Int -> {Int->{Int},Int->{Int},int->{Int}}  \n  Mapping between the respective nominators, denominators and the full quotient "<>
 																				" the two sides of the third isomorphy theorem. The domain groups are indexed ny size.";
 
-ThirdIsomorphyCheck::usage = " Int,Int,Int -> Bool  |  Checks if the third isomorphy theorem is true, that is if i\.08t's assumptions is true, that is if the trippels are "<>
+ThirdIsomorphyCheck::usage = " Int,Int,Int -> Bool  \n  Checks if the third isomorphy theorem is true, that is if i\.08t's assumptions is true, that is if the trippels are "<>
 													"(normal) subgrouping sequence.";
 
-ThirdNonIsomorphies::usage = " Int -> {{Int,Int}}  |  For a subgroup index it returns all pairs of group indexes for which the third isomophy theorem's assumptions are fullfilled."; 
+ThirdNonIsomorphies::usage = " Int -> {{Int,Int}}  \n  For a subgroup index it returns all pairs of group indexes for which the third isomophy theorem's assumptions are fullfilled."; 
 
-ThirdIsomorphies::usage = " Int -> {{Int,Int}}  |  The negation of ThirdNonIsomorphies, that is where the theorem's assumptions are not fullfilled. " ;
+ThirdIsomorphies::usage = " Int -> {{Int,Int}}  \n  The negation of ThirdNonIsomorphies, that is where the theorem's assumptions are not fullfilled. " ;
 
-ThirdNonIsomorphicKIndex::usage = " Int,Int -> Int |  Returns one out of three groups index in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
-													" and where the group with index m,k gives this method postfix M,K.";
+ThirdNonIsomorphicKIndex::usage = " Int,Int -> Int  \n  Returns one out of three groups index in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
+								  " and where the group with index m,k gives this method postfix M,K.";
 
-ThirdNonIsomorphicMIndex::usage = " Int,Int -> Int |  Returns one out of three groups index in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
-													" and where the group with index m,k gives this method postfix M,K.";
+ThirdNonIsomorphicMIndex::usage = " Int,Int -> Int  \n  Returns one out of three groups index in (\!\(\*SubscriptBox[\(Z\), \(n\)]\)\\K)\(M\\K) for which the third isomorphy theorem does not hold "<>
+								  " and where the group with index m,k gives this method postfix M,K.";
 
-ThirdIsomorphyFromGenerators::usage = " Int,Int -> {{Int}->{Int},{Int}->{Int},{int}->{Int}}  |  Like ThirdIsomorphyMappingIso but takes two generators, "<>
-																								" generating two subgroups, as arguments.";
+ThirdIsomorphyFromGenerators::usage = " Int,Int -> {{Int}->{Int},{Int}->{Int},{int}->{Int}}  \n  Like ThirdIsomorphyMappingIso but takes two generators, "<>
+									" generating two subgroups, as arguments.";
 
-LargestThirdIsomorphyGeneratorPairs::usage = " {Int,Int}  |  Returns pairs of generators of different one-generator-subgroups that generates the largest and equal size of the "<>
+LargestThirdIsomorphyGeneratorPairs::usage = " {Int,Int}  \n  Returns pairs of generators of different one-generator-subgroups that generates the largest and equal size of the "<>
 															"left and right side of the third isomorphy theorem.";
 
-FirstLargestThirdIsomorphyGroupsIndexed::usage = " {{Int,Int}}  |  Groups for which left side isomorphic group equals right side isomophic group. Groups are indexed asu usual.";
+FirstLargestThirdIsomorphyGroupsIndexed::usage = " {{Int,Int}}  \n  In the third isomorphy theorem's equation, this function returns groups for which left side isomorphic group "<>
+																	"equals right side isomophic group. Groups are indexed as usual.";
 
-FirstFalseThirdIsomorphyGroupsIndexed::usage = " {{Int,Int}}  |  Like FirstLargestThirdIsomorphyGroupsIndexed but the pair(s) are not isomporphic.";
+FirstFalseThirdIsomorphyGroupsIndexed::usage = " {{Int,Int}}  \n  In the third isomorphy theorem's equation, this function returns groups for which left and right side groups "<>
+																	"are not isomophic. Groups are indexed as usual."
 
 
 (* ::Section:: *)
